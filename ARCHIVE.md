@@ -18,7 +18,23 @@ content and design survive independently of Hostinger and the original agency.
 | DNS | Squarespace |
 | Email | Google Workspace (unaffected by migration) |
 
-## Inventory — 21 pages, 135 assets, 7.7 MB
+## Running it locally
+
+```
+npx serve archive -l 4321
+```
+
+Then open http://localhost:4321. The archive is self-contained — absolute URLs
+were rewritten to root-relative, so it renders without contacting the live site.
+
+## Bugs found on the live site
+
+**Broken "Podcasts" nav link, every page.** The main menu points at `/podcsats`
+(transposed letters), which returns 404 in production. Correct path is `/podcasts`.
+Present on all 21 pages. Left as-is in this archive — it's a faithful snapshot —
+and to be fixed in the rebuild.
+
+## Inventory — 21 pages, 252 assets, 13 MB
 
 ### Core pages (7)
 - `/` — home
@@ -65,3 +81,11 @@ ships 540 KB of icon fonts for what is probably a handful of glyphs.
 
 **URLs must be preserved** on cutover to protect existing SEO. Any that change need
 301 redirects.
+
+**Brand fonts are self-hosted Geologica** (Regular/Medium/SemiBold/Bold woff2, in
+`wp-content/uploads/2023/06/`), with Inter loaded via Elementor's Google Fonts cache.
+Both carry over to the rebuild directly.
+
+**Email addresses are obfuscated** by Cloudflare's email-protection script, so they
+appear as `/cdn-cgi/l/email-protection#<hex>` rather than plain text. The real
+addresses need decoding from those hex strings during the port.
