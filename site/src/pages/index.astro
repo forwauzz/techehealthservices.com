@@ -471,11 +471,17 @@ const faqs = [
     padding-top: var(--space-xl);
   }
 
+  /*
+   * Height matters here: the sticky card can only pin for as long as its
+   * parent extends below it. The original band is ~1800px tall, which is what
+   * gives the card its long pinned travel. At 620px there was effectively zero
+   * range and the card slid straight past.
+   */
   .band-inner {
     position: relative;
     max-width: 1165px;
     margin: 0 auto;
-    min-height: 620px;
+    min-height: 1400px;
   }
 
   .band-photo {

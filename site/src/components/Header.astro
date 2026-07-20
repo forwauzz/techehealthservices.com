@@ -45,41 +45,41 @@ const { overlay = false } = Astro.props
   <a href="/contact/" class="cta">Contact us</a>
 </header>
 
-{
-  overlay && (
-    <script is:inline>
-      (() => {
-        const header = document.currentScript.previousElementSibling
-        if (!header) return
-        let lastY = window.scrollY
-        let ticking = false
+{/*
+  Kept outside any conditional expression on purpose: Astro does not emit
+  `is:inline` scripts nested inside one, so the previous version silently
+  never reached the page. It no-ops when there is no overlay header.
+*/}
+<script is:inline>
+  ;(() => {
+    const header = document.querySelector('.site-header.overlay')
+    if (!header) return
+    let lastY = window.scrollY
+    let ticking = false
 
-        const update = () => {
-          const y = window.scrollY
-          // Solid once past the header's own height.
-          header.classList.toggle('is-solid', y > 80)
-          // Hide on downward scroll, reveal on upward — but never over the hero.
-          const goingDown = y > lastY
-          header.classList.toggle('is-hidden', goingDown && y > 300)
-          lastY = y
-          ticking = false
+    const update = () => {
+      const y = window.scrollY
+      // Solid once past the header's own height.
+      header.classList.toggle('is-solid', y > 80)
+      // Hide on downward scroll, reveal on upward — but never over the hero.
+      header.classList.toggle('is-hidden', y > lastY && y > 300)
+      lastY = y
+      ticking = false
+    }
+
+    addEventListener(
+      'scroll',
+      () => {
+        if (!ticking) {
+          ticking = true
+          requestAnimationFrame(update)
         }
-
-        addEventListener(
-          'scroll',
-          () => {
-            if (!ticking) {
-              ticking = true
-              requestAnimationFrame(update)
-            }
-          },
-          { passive: true }
-        )
-        update()
-      })()
-    </script>
-  )
-}
+      },
+      { passive: true }
+    )
+    update()
+  })()
+</script>
 
 <style>
   /* Measured from the live site: 80px tall, transparent, sitting on the hero. */
