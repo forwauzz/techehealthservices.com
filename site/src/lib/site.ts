@@ -20,17 +20,44 @@ export const SITE = {
 } as const
 
 /**
- * TODO(uzziel): confirm these before launch — they drive the Person schema
- * that the GEO-Pulse audit flagged as missing on all 8 sampled pages
- * (E-E-A-T, weight 6).
+ * Drives the Person schema on every page — the E-E-A-T fix for the audit's
+ * "missing author attribution" failure (weight 6, all 8 sampled pages).
+ *
+ * Sourced from the existing About page. The specifics matter more than the
+ * adjectives: named institutions, named collaborators, and a real publication
+ * are what search engines and language models actually weigh when deciding
+ * whether to cite a source.
  */
 export const AUTHOR = {
   name: 'Uzziel Tamon',
   jobTitle: 'Clinical Applications & AI Consultant',
   bio:
-    'A decade in clinical settings, now helping practices automate their ' +
-    'workflows and adopt healthcare technology that actually works.',
+    'More than a decade inside clinical settings, most of it spent implementing ' +
+    'systems. Began at Brunswick Medical Center as an Archivist and progressed ' +
+    'to Archives Supervisor and IT Coordinator, leading the transition from ' +
+    'paper charts to EMR alongside appointment booking and RAMQ billing ' +
+    'deployments. Also served as a Data Manager at the MUHC Research Institute. ' +
+    'Now advises private practices and RAMQ clinics on EMR selection, ' +
+    'implementation, and AI scribe adoption.',
   url: 'https://techehealthservices.com/about/',
+
+  /** Past affiliations — schema.org Person.alumniOf / worksFor context. */
+  affiliations: [
+    { name: 'Brunswick Medical Center', role: 'Archives Supervisor, IT Coordinator' },
+    { name: 'MUHC Research Institute', role: 'Data Manager' },
+  ],
+
+  /** Topical authority signals for knowsAbout. */
+  expertise: [
+    'EMR implementation',
+    'EHR vendor selection',
+    'Clinical workflow optimization',
+    'RAMQ billing systems',
+    'Medical records management',
+    'AI scribe adoption',
+    'Clinic operations',
+  ],
+
   sameAs: [
     'https://uzzieltamon.substack.com',
     'https://www.youtube.com/@Tech%C3%A9_talksAI',

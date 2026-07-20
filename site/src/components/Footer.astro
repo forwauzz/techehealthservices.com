@@ -1,0 +1,128 @@
+---
+import { NAV, SITE, AUTHOR } from '../lib/site'
+const year = 2026
+---
+
+<footer class="site-footer">
+  <div class="inner">
+    <div class="col">
+      <img src="/TC-Logo_logo-white.png" alt={SITE.name} width="140" height="40" />
+      <p class="tagline">{SITE.tagline}</p>
+    </div>
+
+    <nav class="col" aria-label="Footer">
+      <h2>Services</h2>
+      <ul>
+        {NAV[0].children.map((c) => <li><a href={c.href}>{c.label}</a></li>)}
+      </ul>
+    </nav>
+
+    <nav class="col" aria-label="More">
+      <h2>Company</h2>
+      <ul>
+        <li><a href="/about/">About</a></li>
+        <li><a href="/insights/">Insights</a></li>
+        <li><a href="/podcasts/">Podcasts</a></li>
+        <li><a href="/contact/">Contact</a></li>
+      </ul>
+    </nav>
+
+    <div class="col">
+      <h2>Elsewhere</h2>
+      <ul>
+        {AUTHOR.sameAs.map((url) => (
+          <li>
+            <a href={url} rel="me noopener" target="_blank">
+              {url.includes('substack') ? 'Substack' : url.includes('youtube') ? 'YouTube' : 'X'}
+            </a>
+          </li>
+        ))}
+      </ul>
+    </div>
+  </div>
+
+  <div class="legal">
+    <p>Copyright © {year} {SITE.name.toUpperCase()} — All Rights Reserved.</p>
+    <p>
+      <a href="/privacy-policy/">Privacy Policy</a>
+      <a href="/terms-of-use/">Terms of Use</a>
+    </p>
+  </div>
+</footer>
+
+<style>
+  .site-footer {
+    background: var(--color-ink);
+    color: #fff;
+    margin-top: var(--space-2xl);
+    padding: var(--space-xl) var(--space-lg) var(--space-md);
+  }
+
+  .inner {
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr 1fr;
+    gap: var(--space-lg);
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+
+  h2 {
+    font-size: 0.85rem;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--color-primary-accent);
+    margin: 0 0 var(--space-sm);
+  }
+
+  ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    gap: 0.4rem;
+  }
+
+  a {
+    color: #fff;
+    text-decoration: none;
+    font-size: 0.95rem;
+    opacity: 0.85;
+  }
+
+  a:hover {
+    opacity: 1;
+    color: var(--color-primary-accent);
+  }
+
+  .tagline {
+    color: var(--color-muted-light);
+    max-width: 28ch;
+  }
+
+  .legal {
+    max-width: 1200px;
+    margin: var(--space-xl) auto 0;
+    padding-top: var(--space-md);
+    border-top: 1px solid rgb(255 255 255 / 15%);
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: var(--space-sm);
+    font-size: 0.85rem;
+    color: var(--color-muted-light);
+  }
+
+  .legal p {
+    margin: 0;
+  }
+
+  .legal a {
+    margin-left: var(--space-sm);
+  }
+
+  @media (max-width: 800px) {
+    .inner {
+      grid-template-columns: 1fr 1fr;
+    }
+  }
+</style>

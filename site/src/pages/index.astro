@@ -1,18 +1,446 @@
 ---
 /**
- * Placeholder. The real homepage port comes next — this exists so the
- * foundation builds and the SEO scaffolding can be verified end to end.
+ * Homepage — structural port of the live WordPress home.
+ *
+ * Content is lifted verbatim from the archive EXCEPT the values section, which
+ * on the live site is unmodified VamTam "Beratung" theme demo copy written for
+ * financial advisors ("your clients' financial situations", "financial goals").
+ * That copy is replaced here with healthcare-appropriate text — see the note in
+ * ARCHIVE.md. Everything else matches.
  */
 import BaseLayout from '../layouts/BaseLayout.astro'
-import { SITE } from '../lib/site'
+import Header from '../components/Header.astro'
+import Footer from '../components/Footer.astro'
+import { faqSchema } from '../lib/schema'
+
+const services = [
+  {
+    number: '01',
+    name: 'AI Scribe',
+    href: '/practice-areas/ai-scribe/',
+    items: [
+      {
+        title: 'Automate Your Documentation',
+        body:
+          'AI Scribe transcribes physician-patient conversations into clinically ' +
+          'relevant notes, reducing administrative burdens and freeing up more ' +
+          'time for patient care.',
+      },
+      {
+        title: 'Boost Patient Engagement',
+        body:
+          'By handling tasks like data entry and referrals through advanced AI, ' +
+          'AI Scribe allows physicians to focus on meaningful interactions with ' +
+          'their patients.',
+      },
+      {
+        title: 'Seamless Integration & Efficiency',
+        body:
+          'Unlike basic dictation tools, AI Scribe integrates notes directly into ' +
+          'EMRs, sets reminders, and processes orders, streamlining your workflow ' +
+          'for improved practice management.',
+      },
+    ],
+  },
+  {
+    number: '02',
+    name: 'Total EMR',
+    href: '/practice-areas/emr-services/',
+    items: [
+      {
+        title: 'Tailored EHR Solutions',
+        body:
+          'Total EMR offers a step-by-step process to find and customize the ' +
+          'perfect EHR system for your practice, ensuring seamless integration, ' +
+          'efficiency, and improved patient care.',
+      },
+      {
+        title: 'Expert Project Management',
+        body:
+          'From assessment to implementation, our experienced project managers ' +
+          'guide you through EHR conversion and compliance, minimizing stress, ' +
+          'meeting federal mandates, and optimizing practice workflows.',
+      },
+      {
+        title: 'Comprehensive Training & Support',
+        body:
+          'Total EMR provides specialized training solutions, empowering your ' +
+          'staff with effective tools, tailored training plans, and ongoing ' +
+          'support to maximize system adoption and improve patient outcomes.',
+      },
+    ],
+  },
+  {
+    number: '03',
+    name: 'IT Services',
+    href: '/practice-areas/it-services/',
+    items: [
+      {
+        title: 'Optimized Communication Systems',
+        body:
+          "We assess your practice's unique communication needs, providing " +
+          'customized phone system solutions, from traditional landlines to VoIP ' +
+          'and cloud-based options, for efficient and scalable communication.',
+      },
+      {
+        title: 'Customized Computer Solutions',
+        body:
+          'Our team helps select and configure computers tailored to your ' +
+          "practice's specific needs, ensuring optimal performance, software " +
+          'compatibility, and cost-effectiveness for seamless operations.',
+      },
+      {
+        title: 'Seamless Digital Transformation',
+        body:
+          'Transition from paper to digital with our expert strategies, enhancing ' +
+          'clinical and non-clinical workflows, reducing inefficiencies, and ' +
+          'empowering your practice to fully embrace digital technology.',
+      },
+    ],
+  },
+]
+
+/**
+ * Replaces the theme's financial-advisor demo copy. Same six pillars, same
+ * structure, written for a healthcare consulting practice.
+ */
+const values = [
+  {
+    title: 'Integrity',
+    body:
+      'Uphold high ethical standards and act with honesty, transparency, and ' +
+      'professionalism in every engagement.',
+  },
+  {
+    title: 'Trust and Confidentiality',
+    body:
+      'Patient data and practice operations demand discretion. Confidentiality ' +
+      'is treated as a clinical obligation, not a formality.',
+  },
+  {
+    title: 'Objectivity',
+    body:
+      'Vendor-neutral advice grounded in analysis of your actual workflows, ' +
+      'not in reseller relationships or commissions.',
+  },
+  {
+    title: 'Expertise',
+    body:
+      'More than a decade inside clinical settings — private practice and RAMQ ' +
+      'clinics alike — kept current with the tools and regulations that matter.',
+  },
+  {
+    title: 'Long-Term Relationships',
+    body:
+      'Implementation is the beginning, not the end. Support continues well ' +
+      'past go-live, because that is when the real questions surface.',
+  },
+  {
+    title: 'Accountability',
+    body:
+      'Progress is monitored, strategies reviewed, and adjustments made so your ' +
+      'practice actually reaches the outcomes it set out to achieve.',
+  },
+]
+
+const testimonials = [
+  {
+    name: 'Kamelia Emamian',
+    body:
+      'Thank you Uzziel for helping us navigate different EMRs to find one best ' +
+      'suited for our services and then help establish that EMR. I have a super ' +
+      'busy schedule and I appreciate you being on top of everything and ' +
+      'following up. Your attention and care is much appreciated.',
+  },
+  {
+    name: 'Marcel Severe',
+    body:
+      'TECHE Health Services in one word "AMAZING". Great services. Adjusts to ' +
+      'client needs. Available to provide technical support. One text away to ' +
+      'solve any issue and provide accurate counselling. Great tools to make ' +
+      'office work easier.',
+  },
+]
+
+const faqs = [
+  {
+    question: 'What does a clinical operations consultant do?',
+    answer:
+      'A clinical operations consultant helps healthcare practices select, ' +
+      'implement, and optimize the systems they run on — EMR and EHR platforms, ' +
+      'documentation tools, billing systems, and the workflows connecting them.',
+  },
+  {
+    question: 'How do I choose the right EMR for my practice?',
+    answer:
+      'Start with your workflows rather than feature lists. The right EMR ' +
+      'depends on specialty, patient volume, billing model (RAMQ or private), ' +
+      'existing integrations, and staff capacity for change. A structured ' +
+      'evaluation compares shortlisted vendors against those constraints.',
+  },
+  {
+    question: 'Does an AI scribe actually reduce documentation time?',
+    answer:
+      'It can, but results vary by specialty and by how well the tool integrates ' +
+      'with your EMR. Tools that write notes directly into the chart save more ' +
+      'time than those requiring copy and paste. Evaluation should be based on ' +
+      'your own encounter types.',
+  },
+]
 ---
 
 <BaseLayout
-  title="Clinical Applications & AI Consulting"
+  title="Clinical Operations Consultant"
   description="Teché Health Services helps Montreal clinics select, implement, and optimize EMR systems and AI scribe tools — reducing documentation burden and making healthcare technology work."
+  schema={[faqSchema(faqs)]}
 >
-  <main style="max-width: var(--measure); margin: var(--space-2xl) auto; padding: 0 var(--space-md);">
-    <h1>{SITE.name}</h1>
-    <p style="color: var(--color-muted);">Foundation scaffold. Homepage port in progress.</p>
+  <Header />
+
+  <main>
+    <section class="hero">
+      <div class="hero-copy">
+        <h1>Clinical Operations Consultant</h1>
+        <p class="lede">We simplify healthcare tech</p>
+        <p class="sub">
+          From system integration to on-site training, we make healthcare
+          technology work for you.
+        </p>
+        <a href="/contact/" class="btn">Schedule a free consultation</a>
+      </div>
+      <img
+        src="/hero.jpg"
+        alt="A clinician reviewing patient records on a workstation in a clinical setting"
+        width="960"
+        height="640"
+        fetchpriority="high"
+      />
+    </section>
+
+    <section class="services">
+      <p class="eyebrow">Specialized Services</p>
+      <h2>To meet your needs — AI Scribe, Total EMR, Training, IT</h2>
+
+      {
+        services.map((group) => (
+          <div class="service-group">
+            <h3>
+              <span class="num">{group.number}</span>
+              <a href={group.href}>{group.name}</a>
+            </h3>
+            <div class="cards">
+              {group.items.map((item) => (
+                <article class="card">
+                  <h4>{item.title}</h4>
+                  <p>{item.body}</p>
+                </article>
+              ))}
+            </div>
+          </div>
+        ))
+      }
+    </section>
+
+    <section class="values">
+      <h2>I can guide you through every step of your health tech journey.</h2>
+      <div class="grid">
+        {
+          values.map((v) => (
+            <article>
+              <h3>{v.title}</h3>
+              <p>{v.body}</p>
+            </article>
+          ))
+        }
+      </div>
+      <a href="/about/" class="btn">Learn More</a>
+    </section>
+
+    <section class="testimonials">
+      <p class="eyebrow">Testimonials</p>
+      <h2>Those who trust us</h2>
+      <div class="grid">
+        {
+          testimonials.map((t) => (
+            <figure>
+              <blockquote>{t.body}</blockquote>
+              <figcaption>{t.name}</figcaption>
+            </figure>
+          ))
+        }
+      </div>
+    </section>
+
+    <section class="faq">
+      <h2>Common questions</h2>
+      {
+        faqs.map((f) => (
+          <details>
+            <summary>{f.question}</summary>
+            <p>{f.answer}</p>
+          </details>
+        ))
+      }
+    </section>
   </main>
+
+  <Footer />
 </BaseLayout>
+
+<style>
+  main {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 var(--space-lg);
+  }
+
+  section {
+    padding: var(--space-2xl) 0;
+  }
+
+  .eyebrow {
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: var(--color-primary);
+    margin: 0 0 var(--space-xs);
+  }
+
+  .hero {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--space-xl);
+    align-items: center;
+  }
+
+  .hero h1 {
+    font-size: clamp(2.4rem, 5vw, 3.6rem);
+    margin: 0 0 var(--space-sm);
+  }
+
+  .lede {
+    font-family: var(--font-display);
+    font-size: 1.4rem;
+    font-weight: 500;
+    color: var(--color-primary);
+    margin: 0 0 var(--space-sm);
+  }
+
+  .sub {
+    font-size: 1.1rem;
+    color: var(--color-slate);
+    max-width: 42ch;
+  }
+
+  .hero img {
+    border-radius: var(--radius);
+    object-fit: cover;
+  }
+
+  .btn {
+    display: inline-block;
+    margin-top: var(--space-md);
+    background: var(--color-primary);
+    color: #fff;
+    text-decoration: none;
+    padding: 0.85rem 1.6rem;
+    border-radius: var(--radius);
+    font-weight: 600;
+  }
+
+  .service-group {
+    margin-top: var(--space-xl);
+  }
+
+  .service-group h3 {
+    display: flex;
+    align-items: baseline;
+    gap: var(--space-sm);
+    font-size: 1.6rem;
+    border-bottom: 1px solid var(--color-rule);
+    padding-bottom: var(--space-xs);
+  }
+
+  .service-group h3 a {
+    text-decoration: none;
+    color: var(--color-ink);
+  }
+
+  .num {
+    color: var(--color-primary-accent);
+    font-size: 1rem;
+    font-weight: 700;
+  }
+
+  .cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(16rem, 1fr));
+    gap: var(--space-md);
+    margin-top: var(--space-md);
+  }
+
+  .card {
+    background: var(--color-primary-tint);
+    border-radius: var(--radius);
+    padding: var(--space-md);
+  }
+
+  .card h4 {
+    margin: 0 0 var(--space-xs);
+    font-size: 1.1rem;
+  }
+
+  .card p {
+    margin: 0;
+    color: var(--color-slate);
+    font-size: 0.95rem;
+  }
+
+  .values .grid,
+  .testimonials .grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(17rem, 1fr));
+    gap: var(--space-lg);
+    margin-top: var(--space-lg);
+  }
+
+  .values h3 {
+    font-size: 1.15rem;
+    margin: 0 0 var(--space-xs);
+    color: var(--color-primary);
+  }
+
+  .values p {
+    margin: 0;
+    color: var(--color-slate);
+  }
+
+  blockquote {
+    margin: 0;
+    font-size: 1.05rem;
+    color: var(--color-slate);
+  }
+
+  figcaption {
+    margin-top: var(--space-sm);
+    font-weight: 600;
+  }
+
+  .faq details {
+    border-bottom: 1px solid var(--color-rule);
+    padding: var(--space-sm) 0;
+  }
+
+  .faq summary {
+    font-family: var(--font-display);
+    font-weight: 600;
+    font-size: 1.1rem;
+    cursor: pointer;
+  }
+
+  @media (max-width: 860px) {
+    .hero {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

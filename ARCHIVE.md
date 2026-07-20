@@ -34,6 +34,14 @@ were rewritten to root-relative, so it renders without contacting the live site.
 Present on all 21 pages. Left as-is in this archive — it's a faithful snapshot —
 and to be fixed in the rebuild.
 
+**Unmodified theme demo copy on the homepage.** The six-item values section
+("Integrity", "Objectivity", "Accountability"…) is stock VamTam "Beratung" demo
+text. Beratung is a *financial advisory* theme, and the copy was never rewritten —
+the live homepage currently tells visitors it offers advice based on "a
+comprehensive understanding of your clients' **financial situations**" and helps
+them reach their "**financial goals**". On a healthcare consulting site. Replaced
+with healthcare-appropriate copy in the rebuild, same six pillars and structure.
+
 ## Inventory — 21 pages, 252 assets, 13 MB
 
 ### Core pages (7)

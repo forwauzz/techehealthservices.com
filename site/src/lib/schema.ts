@@ -38,6 +38,11 @@ export function personSchema() {
     url: AUTHOR.url,
     sameAs: [...AUTHOR.sameAs],
     worksFor: { '@id': abs('/#organization') },
+    knowsAbout: [...AUTHOR.expertise],
+    alumniOf: AUTHOR.affiliations.map((a) => ({
+      '@type': 'Organization',
+      name: a.name,
+    })),
   }
 }
 

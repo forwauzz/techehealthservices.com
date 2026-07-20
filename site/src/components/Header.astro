@@ -1,0 +1,126 @@
+---
+import { NAV } from '../lib/site'
+---
+
+<header class="site-header">
+  <a href="/" class="brand" aria-label="Teché Health Services — home">
+    <img src="/TC-Logo.png" alt="Teché Health Services" width="140" height="40" />
+  </a>
+
+  <nav aria-label="Primary">
+    <ul class="nav">
+      {
+        NAV.map((item) => (
+          <li class={'children' in item ? 'has-children' : ''}>
+            <a href={item.href}>{item.label}</a>
+            {'children' in item && (
+              <ul class="submenu">
+                {item.children.map((child) => (
+                  <li>
+                    <a href={child.href}>{child.label}</a>
+                  </li>
+                ))}
+              </ul>
+            )}
+          </li>
+        ))
+      }
+    </ul>
+  </nav>
+
+  <a href="/contact/" class="cta">Contact us</a>
+</header>
+
+<style>
+  .site-header {
+    display: flex;
+    align-items: center;
+    gap: var(--space-lg);
+    padding: var(--space-sm) var(--space-lg);
+    border-bottom: 1px solid var(--color-rule);
+    background: var(--color-surface);
+    position: sticky;
+    top: 0;
+    z-index: 50;
+  }
+
+  .brand {
+    display: flex;
+    flex-shrink: 0;
+  }
+
+  .brand img {
+    height: 40px;
+    width: auto;
+  }
+
+  nav {
+    margin-inline-start: auto;
+  }
+
+  .nav {
+    display: flex;
+    gap: var(--space-md);
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  .nav > li {
+    position: relative;
+  }
+
+  .nav a {
+    color: var(--color-ink);
+    text-decoration: none;
+    font-weight: 500;
+    font-size: 0.95rem;
+  }
+
+  .nav a:hover {
+    color: var(--color-primary);
+  }
+
+  .submenu {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    min-width: 15rem;
+    background: var(--color-surface);
+    border: 1px solid var(--color-rule);
+    border-radius: var(--radius);
+    padding: var(--space-xs) 0;
+    list-style: none;
+    margin: var(--space-xs) 0 0;
+    display: none;
+    box-shadow: 0 8px 24px rgb(0 0 0 / 8%);
+  }
+
+  .has-children:hover .submenu,
+  .has-children:focus-within .submenu {
+    display: block;
+  }
+
+  .submenu a {
+    display: block;
+    padding: var(--space-xs) var(--space-sm);
+    font-weight: 400;
+  }
+
+  .cta {
+    flex-shrink: 0;
+    background: var(--color-primary);
+    color: #fff;
+    text-decoration: none;
+    padding: 0.6rem 1.2rem;
+    border-radius: var(--radius);
+    font-weight: 600;
+    font-size: 0.95rem;
+  }
+
+  @media (max-width: 900px) {
+    nav {
+      display: none;
+    }
+  }
+</style>
