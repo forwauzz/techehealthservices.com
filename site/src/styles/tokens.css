@@ -60,9 +60,18 @@
   /* Accent */
   --color-amber: #fbb002;
 
-  /* Type */
-  --font-display: 'Geologica', system-ui, -apple-system, sans-serif;
-  --font-body: 'Inter', system-ui, -apple-system, 'Helvetica Neue', sans-serif;
+  /*
+   * Type — roles measured from the live site's computed styles, not assumed.
+   * Inter carries the headings and nav; Geologica carries body copy, sub-heads
+   * and buttons. (That is the reverse of what the file inventory suggested.)
+   */
+  --font-heading: 'Inter', system-ui, -apple-system, sans-serif;
+  --font-body: 'Geologica', system-ui, -apple-system, 'Helvetica Neue', sans-serif;
+
+  /* Measured hero values */
+  --hero-height: 720px;
+  --header-height: 80px;
+  --hero-overlay: linear-gradient(55deg, rgb(0 0 0 / 51%) 30%, rgb(0 0 0 / 0%) 60%);
 
   /* Scale */
   --space-xs: 0.5rem;
@@ -95,10 +104,11 @@ h1,
 h2,
 h3,
 h4 {
-  font-family: var(--font-display);
+  font-family: var(--font-heading);
+  font-weight: 500;
   line-height: 1.2;
-  letter-spacing: -0.02em;
-  text-wrap: balance;
+  letter-spacing: -2px;
+  margin: 0;
 }
 
 a {
