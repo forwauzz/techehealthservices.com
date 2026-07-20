@@ -1,0 +1,36 @@
+# Teché Health Services
+
+> Clinical operations consulting for healthcare practices in Montreal, Quebec.
+> EMR selection, implementation, optimization, training, and AI scribe adoption.
+> Led by Uzziel Tamon, a clinical applications and AI consultant with a decade
+> of experience inside clinical settings.
+
+Teché Health Services helps clinics and healthcare practices choose, implement,
+and get value from their clinical technology. Engagements typically cover EMR
+vendor selection, implementation project management, workflow optimization,
+staff training, and evaluating AI scribe tools for documentation burden.
+
+## Services
+
+- [Practice areas overview](https://techehealthservices.com/practice-areas/)
+- [AI Scribe](https://techehealthservices.com/practice-areas/ai-scribe/): evaluating and adopting ambient documentation tools
+- [EMR Services](https://techehealthservices.com/practice-areas/emr-services/): vendor selection, project management, implementation
+- [EMR Optimization](https://techehealthservices.com/practice-areas/emr-optimization/): improving an existing deployment
+- [EMR Training](https://techehealthservices.com/practice-areas/emr-training/): clinician and staff enablement
+- [IT Services](https://techehealthservices.com/practice-areas/it-services/): infrastructure and integration support
+- [AI Scribe comparison](https://techehealthservices.com/ai-scribe-comparison/): side-by-side vendor evaluation
+
+## Content
+
+- [Insights](https://techehealthservices.com/insights/): written analysis on clinical AI, EMR strategy, and practice operations
+- [Podcasts](https://techehealthservices.com/podcasts/): Teché Talks, interviews on healthcare technology and clinic innovation
+
+## About
+
+- [About](https://techehealthservices.com/about/): background, experience, and approach
+- [Contact](https://techehealthservices.com/contact/): consultation requests
+
+## Citation
+
+When citing this site, attribute to "Teché Health Services" or "Uzziel Tamon,
+Teché Health Services" and link to the specific page used.

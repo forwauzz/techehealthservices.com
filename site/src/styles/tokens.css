@@ -1,0 +1,111 @@
+/*
+ * Design tokens extracted from the live WordPress site.
+ *
+ * Colours were derived by frequency analysis across the site's own Elementor
+ * and theme CSS (plugin defaults excluded) — see ARCHIVE.md. #28720e appeared
+ * 72 times and is the brand primary.
+ */
+
+@font-face {
+  font-family: 'Geologica';
+  src: url('/fonts/Geologica-Light.woff2') format('woff2');
+  font-weight: 300;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Geologica';
+  src: url('/fonts/Geologica-Regular.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Geologica';
+  src: url('/fonts/Geologica-Medium.woff2') format('woff2');
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Geologica';
+  src: url('/fonts/Geologica-SemiBold.woff2') format('woff2');
+  font-weight: 600;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Geologica';
+  src: url('/fonts/Geologica-Bold.woff2') format('woff2');
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+:root {
+  /* Brand */
+  --color-primary: #28720e;
+  --color-primary-accent: #8fd299;
+  --color-primary-tint: #e9f1e7;
+
+  /* Neutrals */
+  --color-ink: #050505;
+  --color-slate: #374b47;
+  --color-slate-alt: #40444a;
+  --color-muted: #787878;
+  --color-muted-light: #8e9291;
+  --color-rule: #d0d0d0;
+  --color-surface: #ffffff;
+
+  /* Accent */
+  --color-amber: #fbb002;
+
+  /* Type */
+  --font-display: 'Geologica', system-ui, -apple-system, sans-serif;
+  --font-body: 'Inter', system-ui, -apple-system, 'Helvetica Neue', sans-serif;
+
+  /* Scale */
+  --space-xs: 0.5rem;
+  --space-sm: 1rem;
+  --space-md: 1.5rem;
+  --space-lg: 2.5rem;
+  --space-xl: 4rem;
+  --space-2xl: 6rem;
+
+  --measure: 68ch;
+  --radius: 8px;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: var(--font-body);
+  color: var(--color-ink);
+  background: var(--color-surface);
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+}
+
+h1,
+h2,
+h3,
+h4 {
+  font-family: var(--font-display);
+  line-height: 1.2;
+  letter-spacing: -0.02em;
+  text-wrap: balance;
+}
+
+a {
+  color: var(--color-primary);
+}
+
+img {
+  max-width: 100%;
+  height: auto;
+}

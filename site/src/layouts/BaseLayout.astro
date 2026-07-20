@@ -1,0 +1,111 @@
+---
+/**
+ * Every page inherits from this.
+ *
+ * Twelve of the fourteen failures in the GEO-Pulse baseline audit are fixed
+ * here, once, rather than per-page: canonical, meta description, Open Graph,
+ * JSON-LD, freshness dates, and single-H1 discipline. See audits/ for the
+ * baseline report.
+ */
+import { SITE } from '../lib/site'
+import { graph, organizationSchema, personSchema, websiteSchema } from '../lib/schema'
+import '../styles/tokens.css'
+
+interface Props {
+  /** Page title WITHOUT the site name — it's appended. Audit: keep total ≤ 70. */
+  title: string
+  /** Required. Audit flagged missing meta descriptions on all 8 sampled pages. */
+  description: string
+  /** Optional OG image path, absolute-from-root. */
+  image?: string
+  /** Extra JSON-LD nodes merged into the page @graph. */
+  schema?: object[]
+  /** Set on article/episode pages so crawlers see freshness. */
+  published?: Date
+  updated?: Date
+  /** Opt out of indexing (thank-you pages, etc.). */
+  noindex?: boolean
+}
+
+const {
+  title,
+  description,
+  image = '/TC-Logo.png',
+  schema = [],
+  published,
+  updated,
+  noindex = false,
+} = Astro.props
+
+const canonical = new URL(Astro.url.pathname, SITE.url).toString()
+const fullTitle = `${title} | ${SITE.shortName}`
+const ogImage = new URL(image, SITE.url).toString()
+
+// Site-wide nodes appear on every page; page-specific nodes are appended.
+const jsonLd = graph(organizationSchema(), personSchema(), websiteSchema(), ...schema)
+
+// Dev-time guard rails for the two audit checks that are easy to regress.
+if (import.meta.env.DEV) {
+  if (fullTitle.length > 70) {
+    console.warn(`[seo] Title is ${fullTitle.length} chars (aim ≤70): ${fullTitle}`)
+  }
+  if (!description || description.length < 50) {
+    console.warn(`[seo] Description too short on ${Astro.url.pathname}`)
+  }
+}
+---
+
+<!doctype html>
+<html lang={SITE.lang}>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>{fullTitle}</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonical} />
+    {noindex && <meta name="robots" content="noindex, nofollow" />}
+
+    <meta name="author" content="Uzziel Tamon" />
+    {published && <meta property="article:published_time" content={published.toISOString()} />}
+    {(updated ?? published) && (
+      <meta property="article:modified_time" content={(updated ?? published)!.toISOString()} />
+    )}
+
+    <meta property="og:type" content={published ? 'article' : 'website'} />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:image" content={ogImage} />
+    <meta property="og:site_name" content={SITE.name} />
+    <meta property="og:locale" content={SITE.locale} />
+
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={ogImage} />
+
+    <link rel="sitemap" href="/sitemap-index.xml" />
+
+    <!-- Preload the two display weights actually used above the fold. -->
+    <link
+      rel="preload"
+      href="/fonts/Geologica-SemiBold.woff2"
+      as="font"
+      type="font/woff2"
+      crossorigin
+    />
+    <link
+      rel="preload"
+      href="/fonts/Geologica-Regular.woff2"
+      as="font"
+      type="font/woff2"
+      crossorigin
+    />
+
+    <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
+  </head>
+  <body>
+    <slot />
+  </body>
+</html>
