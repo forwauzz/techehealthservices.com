@@ -45,6 +45,42 @@ const { overlay = false } = Astro.props
   <a href="/contact/" class="cta">Contact us</a>
 </header>
 
+{
+  overlay && (
+    <script is:inline>
+      (() => {
+        const header = document.currentScript.previousElementSibling
+        if (!header) return
+        let lastY = window.scrollY
+        let ticking = false
+
+        const update = () => {
+          const y = window.scrollY
+          // Solid once past the header's own height.
+          header.classList.toggle('is-solid', y > 80)
+          // Hide on downward scroll, reveal on upward — but never over the hero.
+          const goingDown = y > lastY
+          header.classList.toggle('is-hidden', goingDown && y > 300)
+          lastY = y
+          ticking = false
+        }
+
+        addEventListener(
+          'scroll',
+          () => {
+            if (!ticking) {
+              ticking = true
+              requestAnimationFrame(update)
+            }
+          },
+          { passive: true }
+        )
+        update()
+      })()
+    </script>
+  )
+}
+
 <style>
   /* Measured from the live site: 80px tall, transparent, sitting on the hero. */
   .site-header {
@@ -57,12 +93,40 @@ const { overlay = false } = Astro.props
     border-bottom: 1px solid var(--color-rule);
   }
 
+  /*
+   * Sticky behaviour reproduced from the theme's own rules:
+   *   base            transparent
+   *   --fixed-shown   background-color: var(--vamtam-sticky-header-bg-color) = #28720E
+   *   --fixed-hidden  transform: translateY(-100%)
+   *   transition      top/transform .15s linear, background-color .35s ease
+   * Net effect: hides on scroll down, reappears solid green on scroll up.
+   */
   .site-header.overlay {
-    position: absolute;
+    position: fixed;
     inset: 0 0 auto;
-    z-index: 10;
+    z-index: 100;
     background: transparent;
     border-bottom: none;
+    transition:
+      transform 0.15s linear,
+      background-color 0.35s ease;
+  }
+
+  .site-header.overlay.is-solid {
+    background-color: #28720e;
+  }
+
+  .site-header.overlay.is-hidden {
+    transform: translateY(-100%);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .site-header.overlay {
+      transition: background-color 0.35s ease;
+    }
+    .site-header.overlay.is-hidden {
+      transform: none;
+    }
   }
 
   .brand img {
