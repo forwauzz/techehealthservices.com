@@ -18,6 +18,9 @@ const services = [
     number: '01',
     name: 'AI Scribe',
     href: '/practice-areas/ai-scribe/',
+    image: '/img/shutterstock_1722857038-1024x983.jpg',
+    imageAlt:
+      'A clinician taking notes during a patient consultation while ambient documentation runs',
     items: [
       {
         title: 'Automate Your Documentation',
@@ -46,6 +49,9 @@ const services = [
     number: '02',
     name: 'Total EMR',
     href: '/practice-areas/emr-services/',
+    image: '/img/shutterstock_2187807981-1024x983.jpg',
+    imageAlt:
+      'A healthcare professional reviewing an electronic medical record on a tablet with a patient',
     items: [
       {
         title: 'Tailored EHR Solutions',
@@ -74,6 +80,9 @@ const services = [
     number: '03',
     name: 'IT Services',
     href: '/practice-areas/it-services/',
+    image: '/img/shutterstock_2463474777-1024x983.jpg',
+    imageAlt:
+      'Clinic staff working at networked computer workstations in a medical office',
     items: [
       {
         title: 'Optimized Communication Systems',
@@ -216,25 +225,33 @@ const faqs = [
       <p class="eyebrow">Specialized Services</p>
       <h2>To meet your needs — AI Scribe, Total EMR, Training, IT</h2>
 
-      {
-        services.map((group) => (
-          <div class="service-group">
-            <h3>
-              <span class="num">{group.number}</span>
+    </section>
+
+    {
+      services.map((group) => (
+        <section class="band">
+          <div class="band-inner">
+            <img class="band-photo" src={group.image} alt={group.imageAlt} width="506" height="486" loading="lazy" />
+            <h3 class="band-title">
               <a href={group.href}>{group.name}</a>
             </h3>
-            <div class="cards">
+            <div class="band-card">
               {group.items.map((item) => (
-                <article class="card">
-                  <h4>{item.title}</h4>
+                <article>
+                  <h4>
+                    <a href={group.href}>{item.title} &gt;</a>
+                  </h4>
                   <p>{item.body}</p>
                 </article>
               ))}
             </div>
+            <p class="band-index">
+              {group.number} {group.name}
+            </p>
           </div>
-        ))
-      }
-    </section>
+        </section>
+      ))
+    }
 
     <section class="values">
       <h2>I can guide you through every step of your health tech journey.</h2>
@@ -435,52 +452,146 @@ const faqs = [
     }
   }
 
-  .service-group {
-    margin-top: var(--space-xl);
-  }
-
-  .service-group h3 {
-    display: flex;
-    align-items: baseline;
-    gap: var(--space-sm);
-    font-size: 1.6rem;
-    border-bottom: 1px solid var(--color-rule);
-    padding-bottom: var(--space-xs);
-  }
-
-  .service-group h3 a {
-    text-decoration: none;
-    color: var(--color-ink);
-  }
-
-  .num {
-    color: var(--color-primary-accent);
-    font-size: 1rem;
-    font-weight: 700;
-  }
-
-  .cards {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(16rem, 1fr));
-    gap: var(--space-md);
-    margin-top: var(--space-md);
-  }
-
-  .card {
+  /*
+   * Service bands. Measured from the original:
+   *   heading  Geologica 70px / 700 / rgba(0,0,0,.5) / letter-spacing -2.8px
+   *   photo    506x486, masked with the brand symbol SVG (the angled shape)
+   *   card     white, padding 70px 30px 50px, three columns
+   *   motion   card is position:sticky within the band; photo parallaxes
+   */
+  .band {
+    /* Break out of main's max-width to go full-bleed. */
+    width: 100vw;
+    margin-left: calc(50% - 50vw);
     background: var(--color-primary-tint);
-    border-radius: var(--radius);
-    padding: var(--space-md);
+    padding: var(--space-2xl) 30px;
   }
 
-  .card h4 {
-    margin: 0 0 var(--space-xs);
-    font-size: 1.1rem;
+  .band + .band {
+    padding-top: var(--space-xl);
   }
 
-  .card p {
+  .band-inner {
+    position: relative;
+    max-width: 1165px;
+    margin: 0 auto;
+    min-height: 620px;
+  }
+
+  .band-photo {
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 506px;
+    height: 486px;
+    object-fit: cover;
+    /* The angled parallelogram is the brand symbol used as a mask. */
+    mask-image: url('/img/brand-symbol-bg-mask.svg');
+    mask-size: contain;
+    mask-position: 50% 50%;
+    mask-repeat: no-repeat;
+    -webkit-mask-image: url('/img/brand-symbol-bg-mask.svg');
+    -webkit-mask-size: contain;
+    -webkit-mask-position: 50% 50%;
+    -webkit-mask-repeat: no-repeat;
+  }
+
+  .band-title {
+    font-family: var(--font-body);
+    font-size: 70px;
+    font-weight: 700;
+    letter-spacing: -2.8px;
+    line-height: 1.1;
+    color: rgb(0 0 0 / 50%);
     margin: 0;
+    padding-top: 180px;
+  }
+
+  .band-title a {
+    color: inherit;
+    text-decoration: none;
+  }
+
+  .band-card {
+    position: sticky;
+    top: 90px;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    background: #fff;
+    padding: 70px 30px 50px;
+    margin-top: var(--space-md);
+    max-width: 858px;
+    gap: var(--space-md);
+  }
+
+  .band-card h4 {
+    font-family: var(--font-body);
+    font-size: 15px;
+    font-weight: 600;
+    letter-spacing: -0.4px;
+    line-height: 1.4;
+    margin: 0 0 var(--space-sm);
+  }
+
+  .band-card h4 a {
+    color: var(--color-primary);
+    text-decoration: none;
+  }
+
+  .band-card p {
+    margin: 0;
+    font-family: var(--font-body);
+    font-size: 13px;
+    line-height: 1.6;
     color: var(--color-slate);
-    font-size: 0.95rem;
+  }
+
+  .band-index {
+    font-family: var(--font-body);
+    font-size: 12px;
+    color: var(--color-muted);
+    text-align: center;
+    margin: var(--space-lg) 0 0;
+  }
+
+  /* The translateY motion effect, expressed as a scroll-driven animation
+     where supported. Static and harmless everywhere else. */
+  @supports (animation-timeline: view()) {
+    @media (prefers-reduced-motion: no-preference) {
+      .band-photo {
+        animation: band-parallax linear both;
+        animation-timeline: view();
+        animation-range: entry 0% cover 66%;
+      }
+    }
+  }
+
+  @keyframes band-parallax {
+    from {
+      transform: translateY(60px);
+    }
+    to {
+      transform: translateY(-60px);
+    }
+  }
+
+  @media (max-width: 1000px) {
+    .band-photo {
+      position: static;
+      width: 100%;
+      height: auto;
+      margin-bottom: var(--space-md);
+    }
+    .band-title {
+      padding-top: 0;
+      font-size: 44px;
+      letter-spacing: -1.6px;
+    }
+    .band-card {
+      position: static;
+      grid-template-columns: 1fr;
+      padding: var(--space-lg) var(--space-md);
+    }
   }
 
   .values .grid,
