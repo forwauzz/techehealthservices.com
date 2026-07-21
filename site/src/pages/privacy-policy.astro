@@ -1,0 +1,77 @@
+---
+/**
+ * Privacy Policy. Written fresh for the static site — the live WordPress page
+ * was empty. This is a reasonable baseline that reflects how the site actually
+ * works (a contact form, an optional newsletter, no ad tracking). It is NOT
+ * legal advice; have it reviewed before relying on it, especially given
+ * Quebec's Law 25. See docs note.
+ */
+import LegalLayout from '../layouts/LegalLayout.astro'
+import { SITE, CONTACT } from '../lib/site'
+---
+
+<LegalLayout
+  title="Privacy Policy"
+  heading="Privacy Policy"
+  description="How Teché Health Services collects, uses, and protects the personal information you share through this website."
+  updated="July 2026"
+  path="/privacy-policy/"
+>
+  <p>
+    This Privacy Policy explains how {SITE.name} ("we", "us") collects, uses, and
+    protects the personal information you provide through this website. We are
+    based in Montreal, Quebec, and we handle personal information in a manner
+    consistent with applicable Quebec and Canadian privacy law.
+  </p>
+
+  <h2>Information we collect</h2>
+  <p>We only collect the information you choose to give us:</p>
+  <ul>
+    <li>
+      <strong>Consultation form.</strong> When you submit our contact form, we
+      collect your name, email, and any other details you include (such as phone
+      number, company, website, and message) so we can respond to your enquiry.
+    </li>
+    <li>
+      <strong>Newsletter.</strong> If you subscribe to our newsletter, we collect
+      your email address to send you updates. You can unsubscribe at any time
+      using the link in any email.
+    </li>
+  </ul>
+  <p>
+    We do not sell your personal information, and we do not use it for
+    advertising.
+  </p>
+
+  <h2>How we use your information</h2>
+  <p>
+    We use the information you provide solely to respond to your enquiries,
+    deliver the services you request, and — where you have opted in — send you
+    newsletter updates. We keep it only as long as needed for those purposes.
+  </p>
+
+  <h2>Third-party services</h2>
+  <p>
+    We use reputable service providers to operate this site and communicate with
+    you (for example, an email delivery provider for our newsletter and form
+    responses). These providers process your information only on our behalf.
+    Pages may also include embedded content from third parties such as Spotify
+    (podcast player); that content may collect data as described in the third
+    party's own privacy policy.
+  </p>
+
+  <h2>Your rights</h2>
+  <p>
+    You have the right to access, correct, or request deletion of the personal
+    information we hold about you, and to withdraw consent for its use. To make a
+    request, contact us at
+    <a href={`mailto:${CONTACT.email}`}>{CONTACT.email}</a>.
+  </p>
+
+  <h2>Contact</h2>
+  <p>
+    Questions about this policy? Email
+    <a href={`mailto:${CONTACT.email}`}>{CONTACT.email}</a> or call
+    <a href={CONTACT.phoneHref}>{CONTACT.phone}</a>.
+  </p>
+</LegalLayout>

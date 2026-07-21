@@ -1,0 +1,16 @@
+# Cloudflare Pages redirects.
+#
+# Preserve old WordPress URLs that have no standalone content in the rebuild.
+
+# The AI-scribe comparison page was never finished on the live site (its only
+# content was "Short description of the scribe"). Send it to the real AI Scribe
+# service page rather than ship an empty page.
+/ai-scribe-comparison/  /practice-areas/ai-scribe/  301
+/ai-scribe-comparison    /practice-areas/ai-scribe/  301
+
+# WordPress category taxonomy archives -> the Insights index, which already
+# offers category filtering.
+/category/insights/      /insights/  301
+/category/integration/   /insights/  301
+/category/support/       /insights/  301
+/category/*              /insights/  301

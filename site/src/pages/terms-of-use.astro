@@ -1,0 +1,66 @@
+---
+/**
+ * Terms of Use. Written fresh — the live page held only default WordPress
+ * boilerplate about blog comments and login cookies, none of which applies to
+ * this static site. Baseline only, not legal advice; have it reviewed.
+ */
+import LegalLayout from '../layouts/LegalLayout.astro'
+import { SITE, CONTACT } from '../lib/site'
+---
+
+<LegalLayout
+  title="Terms of Use"
+  heading="Terms of Use"
+  description="The terms governing your use of the Teché Health Services website and its content."
+  updated="July 2026"
+  path="/terms-of-use/"
+>
+  <p>
+    These Terms of Use govern your access to and use of the {SITE.name} website.
+    By using this site, you agree to these terms.
+  </p>
+
+  <h2>Use of the site</h2>
+  <p>
+    This website and its content are provided for general informational purposes
+    about our consulting services. You may view and share our content for
+    personal, non-commercial purposes. You may not copy, republish, or
+    redistribute it for commercial purposes without our written permission.
+  </p>
+
+  <h2>No professional advice</h2>
+  <p>
+    Content on this site is general information, not professional, legal, or
+    clinical advice, and does not create a consulting relationship. Engagements
+    begin only through a signed agreement. Always seek qualified advice specific
+    to your situation before acting.
+  </p>
+
+  <h2>Intellectual property</h2>
+  <p>
+    The Teché name, logo, and the original content on this site are the property
+    of {SITE.name}. Third-party names and logos referenced on the site belong to
+    their respective owners.
+  </p>
+
+  <h2>Third-party links</h2>
+  <p>
+    This site may link to or embed third-party content (such as our podcast on
+    Spotify or our newsletter on Substack). We are not responsible for the
+    content or practices of those third-party services.
+  </p>
+
+  <h2>Limitation of liability</h2>
+  <p>
+    This site is provided "as is". To the extent permitted by law, we are not
+    liable for any loss arising from your use of, or reliance on, the site or its
+    content.
+  </p>
+
+  <h2>Contact</h2>
+  <p>
+    Questions about these terms? Email
+    <a href={`mailto:${CONTACT.email}`}>{CONTACT.email}</a> or call
+    <a href={CONTACT.phoneHref}>{CONTACT.phone}</a>.
+  </p>
+</LegalLayout>
