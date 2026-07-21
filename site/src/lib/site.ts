@@ -65,6 +65,12 @@ export const AUTHOR = {
   ],
 } as const
 
+export const CONTACT = {
+  phone: '514-836-3199',
+  phoneHref: 'tel:+15148363199',
+  email: 'uzziel@techehealthservices.com',
+} as const
+
 export const ORGANIZATION = {
   legalName: 'Teché Health Services',
   areaServed: 'Montreal, Quebec, Canada',

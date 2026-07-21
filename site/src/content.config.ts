@@ -76,11 +76,27 @@ const services = defineCollection({
   schema: z.object({
     ...seo,
     order: z.number().int().default(99),
-    summary: z.string(),
-    /** Rendered as an FAQ block + FAQPage schema — the audit's heaviest check. */
-    faq: z
+    /** H1 — usually shorter than the SEO title. */
+    heading: z.string(),
+    /** Lead paragraph under the header band. Inline markdown (**bold**) allowed. */
+    intro: z.string(),
+    /**
+     * The Q&A cards. Rendered visibly AND as FAQPage schema — legitimate here
+     * because the content is on the page, unlike the home page where it wasn't.
+     */
+    qa: z
       .array(z.object({ question: z.string(), answer: z.string() }))
       .default([]),
+    /** Secondary section: heading + intro + checkmark points. Heading varies
+     *  per page on the live site ("How we help", "Project management", …). */
+    helpHeading: z.string().default('How we help'),
+    helpIntro: z.string().optional(),
+    helpPoints: z.array(z.string()).default([]),
+    /** Stat panel beside "How we help". */
+    stats: z
+      .array(z.object({ value: z.string(), label: z.string() }))
+      .default([]),
+    statsSource: z.string().optional(),
   }),
 })
 

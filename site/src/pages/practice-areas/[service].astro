@@ -1,0 +1,397 @@
+---
+/**
+ * Service page template. One layout, driven by the `services` content
+ * collection, so all five practice-area pages share it and are edited as
+ * markdown frontmatter rather than duplicated markup.
+ *
+ * Layout matched to the live site:
+ *   header band  #e4edf3, green H1 (Geologica 48/600), outlined CTA
+ *   intro        centred lead paragraph with inline bold
+ *   Q&A          four columns, green headings, divider rules
+ *   how we help  two columns: heading + checkmark points | stat panel
+ *   consult CTA  centred green heading + solid button
+ *   my expertise cross-links to the other services
+ */
+import { getCollection, render } from 'astro:content'
+import BaseLayout from '../../layouts/BaseLayout.astro'
+import Header from '../../components/Header.astro'
+import Footer from '../../components/Footer.astro'
+import { articleSchema, faqSchema, breadcrumbSchema } from '../../lib/schema'
+
+export async function getStaticPaths() {
+  const services = await getCollection('services')
+  return services.map((entry) => ({
+    params: { service: entry.id },
+    props: { entry, all: services },
+  }))
+}
+
+const { entry, all } = Astro.props
+const d = entry.data
+const path = `/practice-areas/${entry.id}/`
+
+// Inline **bold** without pulling in a markdown renderer for one paragraph.
+const inlineBold = (s: string) =>
+  s.replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>')
+
+// "My Expertise" — the other services, in order.
+const others = all
+  .filter((s) => s.id !== entry.id)
+  .sort((a, b) => a.data.order - b.data.order)
+
+const schema = [
+  articleSchema({
+    title: d.title,
+    description: d.description,
+    path,
+    published: new Date('2024-01-01'),
+  }),
+  breadcrumbSchema([
+    { name: 'Home', path: '/' },
+    { name: 'Services', path: '/practice-areas/' },
+    { name: d.heading, path },
+  ]),
+]
+if (d.qa.length) schema.push(faqSchema(d.qa))
+---
+
+<BaseLayout title={d.title} description={d.description} schema={schema}>
+  <Header />
+
+  <header class="band">
+    <div class="band-inner">
+      <p class="eyebrow">Services</p>
+      <div class="band-row">
+        <h1>{d.heading}</h1>
+        <a href="/contact/" class="btn-outline">Get a consultation</a>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <p class="intro" set:html={inlineBold(d.intro)} />
+
+    {
+      d.qa.length > 0 && (
+        <section class="qa">
+          {d.qa.map((item) => (
+            <article>
+              <h2>{item.question}</h2>
+              <p>{item.answer}</p>
+            </article>
+          ))}
+        </section>
+      )
+    }
+
+    <section class="help">
+      <div class="help-copy">
+        <h2>{d.helpHeading}</h2>
+        {d.helpIntro && <p class="help-intro">{d.helpIntro}</p>}
+        <ul>
+          {d.helpPoints.map((pt) => <li>{pt}</li>)}
+        </ul>
+      </div>
+      {
+        d.stats.length > 0 && (
+          <div class="stats">
+            {d.stats.map((s) => (
+              <div class="stat">
+                <p class="stat-value">{s.value}</p>
+                <p class="stat-label">{s.label}</p>
+              </div>
+            ))}
+            {d.statsSource && <p class="stat-source">Source: {d.statsSource}</p>}
+          </div>
+        )
+      }
+    </section>
+
+    <section class="consult">
+      <h2>Schedule a free 30-minute consultation</h2>
+      <a href="/contact/" class="btn-solid">Get consultation</a>
+    </section>
+
+    <section class="expertise">
+      <p class="eyebrow">My Expertise</p>
+      <div class="expertise-grid">
+        {
+          others.map((s) => (
+            <a href={`/practice-areas/${s.id}/`} class="xlink">
+              <h3>
+                {s.data.heading} <span aria-hidden="true">›</span>
+              </h3>
+              <p>{s.data.description}</p>
+            </a>
+          ))
+        }
+      </div>
+    </section>
+  </main>
+
+  <Footer />
+</BaseLayout>
+
+<style>
+  .band {
+    background: #e4edf3;
+  }
+
+  .band-inner {
+    max-width: 1165px;
+    margin: 0 auto;
+    padding: var(--space-2xl) var(--space-lg) var(--space-xl);
+  }
+
+  .eyebrow {
+    display: inline-block;
+    background: var(--color-primary);
+    color: #fff;
+    font-size: 0.7rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    padding: 0.3rem 0.7rem;
+    margin: 0 0 var(--space-md);
+  }
+
+  .band-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-md);
+    flex-wrap: wrap;
+  }
+
+  .band h1 {
+    font-family: var(--font-body);
+    font-size: 48px;
+    font-weight: 600;
+    letter-spacing: -1px;
+    color: var(--color-primary);
+    margin: 0;
+  }
+
+  .btn-outline {
+    font-family: var(--font-body);
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--color-primary);
+    text-decoration: none;
+    padding: 16.5px 32px;
+    border: 1px solid var(--color-primary);
+    background: transparent;
+    white-space: nowrap;
+  }
+
+  .btn-outline:hover {
+    background: var(--color-primary);
+    color: #fff;
+  }
+
+  main {
+    max-width: 1165px;
+    margin: 0 auto;
+    padding: 0 var(--space-lg);
+  }
+
+  .intro {
+    max-width: 60ch;
+    margin: var(--space-2xl) auto;
+    font-size: 1.25rem;
+    line-height: 1.5;
+    text-align: center;
+    font-weight: 500;
+  }
+
+  .qa {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: var(--space-lg);
+    padding-bottom: var(--space-2xl);
+  }
+
+  .qa article {
+    border-left: 1px solid var(--color-rule);
+    padding-left: var(--space-md);
+  }
+
+  .qa article:first-child {
+    border-left: none;
+    padding-left: 0;
+  }
+
+  .qa h2 {
+    font-family: var(--font-body);
+    font-size: 24px;
+    font-weight: 600;
+    color: var(--color-primary);
+    margin: 0 0 var(--space-sm);
+  }
+
+  .qa p {
+    margin: 0;
+    font-size: 0.9rem;
+    line-height: 1.6;
+    color: var(--color-slate);
+  }
+
+  .help {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--space-2xl);
+    align-items: start;
+    padding: var(--space-2xl) 0;
+  }
+
+  .help-copy h2 {
+    font-size: 44px;
+    font-weight: 600;
+    letter-spacing: -1.5px;
+    color: var(--color-primary);
+    margin: 0 0 var(--space-md);
+  }
+
+  .help-intro {
+    color: var(--color-slate);
+    margin: 0 0 var(--space-lg);
+  }
+
+  .help ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    gap: var(--space-md);
+  }
+
+  .help li {
+    position: relative;
+    padding-left: 2rem;
+    font-size: 0.9rem;
+    font-weight: 500;
+    line-height: 1.5;
+    border-bottom: 1px solid var(--color-rule);
+    padding-bottom: var(--space-md);
+  }
+
+  .help li::before {
+    content: '✓';
+    position: absolute;
+    left: 0;
+    top: 0;
+    font-weight: 700;
+    color: var(--color-ink);
+  }
+
+  .stats {
+    background: #eef3f6;
+    padding: var(--space-xl);
+    display: grid;
+    gap: var(--space-lg);
+  }
+
+  .stat-value {
+    font-family: var(--font-body);
+    font-size: 48px;
+    font-weight: 700;
+    color: var(--color-ink);
+    margin: 0;
+    line-height: 1;
+  }
+
+  .stat-label {
+    margin: 0.4rem 0 0;
+    font-size: 0.9rem;
+    color: var(--color-slate);
+    max-width: 30ch;
+  }
+
+  .stat-source {
+    margin: 0;
+    font-size: 0.85rem;
+    color: var(--color-muted);
+    text-align: right;
+  }
+
+  .consult {
+    text-align: center;
+    padding: var(--space-2xl) 0;
+  }
+
+  .consult h2 {
+    font-size: 40px;
+    font-weight: 600;
+    letter-spacing: -1px;
+    color: var(--color-primary);
+    margin: 0 0 var(--space-lg);
+  }
+
+  .expertise {
+    padding: var(--space-xl) 0 var(--space-2xl);
+  }
+
+  .expertise-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: var(--space-lg) var(--space-2xl);
+    margin-top: var(--space-lg);
+  }
+
+  .xlink {
+    text-decoration: none;
+    color: var(--color-ink);
+    border-bottom: 1px solid var(--color-rule);
+    padding-bottom: var(--space-md);
+  }
+
+  .xlink h3 {
+    font-size: 1.15rem;
+    font-weight: 600;
+    margin: 0 0 var(--space-xs);
+    display: flex;
+    justify-content: space-between;
+    gap: var(--space-sm);
+    color: var(--color-primary);
+  }
+
+  .xlink p {
+    margin: 0;
+    font-size: 0.85rem;
+    color: var(--color-slate);
+  }
+
+  .btn-solid {
+    display: inline-block;
+    background: var(--color-primary);
+    color: #fff;
+    text-decoration: none;
+    font-family: var(--font-body);
+    font-size: 14px;
+    font-weight: 600;
+    padding: 16.5px 32px;
+  }
+
+  @media (max-width: 900px) {
+    .qa {
+      grid-template-columns: 1fr 1fr;
+    }
+    .help {
+      grid-template-columns: 1fr;
+      gap: var(--space-lg);
+    }
+    .expertise-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  @media (max-width: 560px) {
+    .qa {
+      grid-template-columns: 1fr;
+    }
+    .qa article {
+      border-left: none;
+      padding-left: 0;
+    }
+  }
+</style>
