@@ -68,6 +68,23 @@ An **academy for busy health and legal professionals to learn how to use AI.**
    Consider a hosted platform (Podia/Teachable) for the paid phase rather than
    rebuilding Stripe + tax + video from scratch.
 
+## Future / someday (captured, not scoped)
+
+Inspired by Coursera. These are directional ideas, not commitments — parked here
+so they aren't lost:
+
+- **Stripe integration** for paid courses/subscriptions once past the free phase.
+- **Connectors** to the tools professionals already live in:
+  - Gmail / Outlook — enrolment confirmations, nudges, progress digests.
+  - Calendar (Google/Outlook) — schedule reminders to finish a course, block
+    study time, deadline nudges. The "little things" that drive completion.
+- **Engagement mechanics** — reminders, streaks, resume-where-you-left-off,
+  completion certificates. Coursera-style retention, sized to the audience.
+
+**Validation plan:** test early versions with medical cofounders from Uzziel's
+other projects (ALIE and Aurion) — a warm, qualified group of real clinicians to
+pressure-test course content and the platform before wider launch.
+
 ## What exists today (the actual skeleton)
 
 - `courses` collection in `site/src/content.config.ts` with fields: title,
