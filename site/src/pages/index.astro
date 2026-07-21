@@ -152,24 +152,7 @@ const values = [
   },
 ]
 
-const testimonials = [
-  {
-    name: 'Kamelia Emamian',
-    body:
-      'Thank you Uzziel for helping us navigate different EMRs to find one best ' +
-      'suited for our services and then help establish that EMR. I have a super ' +
-      'busy schedule and I appreciate you being on top of everything and ' +
-      'following up. Your attention and care is much appreciated.',
-  },
-  {
-    name: 'Marcel Severe',
-    body:
-      'TECHE Health Services in one word "AMAZING". Great services. Adjusts to ' +
-      'client needs. Available to provide technical support. One text away to ' +
-      'solve any issue and provide accurate counselling. Great tools to make ' +
-      'office work easier.',
-  },
-]
+import { TESTIMONIALS as testimonials } from '../lib/testimonials'
 
 /** The three existing posts, surfaced on the homepage as on the live site. */
 const insights = [
@@ -291,7 +274,10 @@ const insights = [
           testimonials.map((t) => (
             <figure>
               <blockquote>{t.body}</blockquote>
-              <figcaption>{t.name}</figcaption>
+              <figcaption>
+                {t.name}
+                {t.source && <span class="source"> · {t.source}</span>}
+              </figcaption>
             </figure>
           ))
         }
@@ -716,6 +702,11 @@ const insights = [
   figcaption {
     margin-top: var(--space-sm);
     font-weight: 600;
+  }
+
+  figcaption .source {
+    font-weight: 400;
+    color: var(--color-muted);
   }
 
   /* Contact form. */
