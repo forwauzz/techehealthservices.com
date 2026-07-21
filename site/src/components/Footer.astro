@@ -3,6 +3,11 @@ import { NAV, SITE, AUTHOR } from '../lib/site'
 const year = 2026
 ---
 
+<aside class="footer-cta">
+  <p>Ready to simplify your healthcare technology?</p>
+  <a href="/contact/">Schedule a free consultation</a>
+</aside>
+
 <footer class="site-footer">
   <div class="inner">
     <div class="col">
@@ -51,10 +56,40 @@ const year = 2026
 </footer>
 
 <style>
+  /* Green call-to-action bar sitting directly above the dark footer. */
+  .footer-cta {
+    background: var(--color-primary);
+    color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: var(--space-md);
+    padding: var(--space-lg) var(--space-lg);
+  }
+
+  .footer-cta p {
+    margin: 0;
+    font-family: var(--font-heading);
+    font-size: 1.4rem;
+    font-weight: 500;
+    letter-spacing: -0.5px;
+  }
+
+  .footer-cta a {
+    background: #fff;
+    color: var(--color-primary);
+    text-decoration: none;
+    font-family: var(--font-body);
+    font-weight: 600;
+    font-size: 14px;
+    padding: 16.5px 32px;
+    white-space: nowrap;
+  }
+
   .site-footer {
     background: var(--color-ink);
     color: #fff;
-    margin-top: var(--space-2xl);
     padding: var(--space-xl) var(--space-lg) var(--space-md);
   }
 

@@ -11,7 +11,6 @@
 import BaseLayout from '../layouts/BaseLayout.astro'
 import Header from '../components/Header.astro'
 import Footer from '../components/Footer.astro'
-import { faqSchema } from '../lib/schema'
 
 const services = [
   {
@@ -171,29 +170,44 @@ const testimonials = [
   },
 ]
 
-const faqs = [
+/** "Interested in" dropdown — options lifted from the live form. */
+const interests = [
+  'AI Scribe',
+  'EMR Training',
+  'EMR Optimization',
+  'EMR Systems Implementation',
+  'IT Services',
+  'Other',
+]
+
+/** The three existing posts, surfaced on the homepage as on the live site. */
+const insights = [
   {
-    question: 'What does a clinical operations consultant do?',
-    answer:
-      'A clinical operations consultant helps healthcare practices select, ' +
-      'implement, and optimize the systems they run on — EMR and EHR platforms, ' +
-      'documentation tools, billing systems, and the workflows connecting them.',
+    title: 'Integrated Soft phones & EMRs',
+    href: '/integrated-soft-phones-emrs/',
+    image: '/img/image-768x514.jpg',
+    category: 'Integration',
+    excerpt:
+      'Investors must navigate uncertain times and unpredictable waters. Effective ' +
+      'strategies, like diversifying portfolios and analyzing markets.',
   },
   {
-    question: 'How do I choose the right EMR for my practice?',
-    answer:
-      'Start with your workflows rather than feature lists. The right EMR ' +
-      'depends on specialty, patient volume, billing model (RAMQ or private), ' +
-      'existing integrations, and staff capacity for change. A structured ' +
-      'evaluation compares shortlisted vendors against those constraints.',
+    title: 'Elevate your Healthcare facility with Expert EMR Consulting',
+    href: '/elevate-your-healthcare-facility-with-expert-emr-consulting/',
+    image: '/img/shutterstock_2072581631-768x472.jpg',
+    category: 'Insights',
+    excerpt:
+      'Investors must navigate uncertain times and unpredictable waters. Effective ' +
+      'strategies, like diversifying portfolios and analyzing markets.',
   },
   {
-    question: 'Does an AI scribe actually reduce documentation time?',
-    answer:
-      'It can, but results vary by specialty and by how well the tool integrates ' +
-      'with your EMR. Tools that write notes directly into the chart save more ' +
-      'time than those requiring copy and paste. Evaluation should be based on ' +
-      'your own encounter types.',
+    title: 'Systems Software Implementation: the psychological approach',
+    href: '/systems-software-psychological-approach/',
+    image: '/img/shutterstock_2486103943-768x472.jpg',
+    category: 'Support',
+    excerpt:
+      'Investors must navigate uncertain times and unpredictable waters. Effective ' +
+      'strategies, like diversifying portfolios and analyzing markets.',
   },
 ]
 ---
@@ -201,7 +215,6 @@ const faqs = [
 <BaseLayout
   title="Clinical Operations Consultant"
   description="Teché Health Services helps Montreal clinics select, implement, and optimize EMR systems and AI scribe tools — reducing documentation burden and making healthcare technology work."
-  schema={[faqSchema(faqs)]}
 >
   <section class="hero">
     <Header overlay />
@@ -253,19 +266,30 @@ const faqs = [
       ))
     }
 
-    <section class="values">
-      <h2>I can guide you through every step of your health tech journey.</h2>
-      <div class="grid">
-        {
-          values.map((v) => (
-            <article>
-              <h3>{v.title}</h3>
-              <p>{v.body}</p>
-            </article>
-          ))
-        }
+    <section class="guide">
+      <img
+        class="guide-photo"
+        src="/img/uzziel-portrait.jpg"
+        alt="Uzziel Tamon, Clinical Applications & AI Consultant at Teché Health Services"
+        width="480"
+        height="720"
+        loading="lazy"
+      />
+      <div class="guide-panel">
+        <h2>I can guide you through every step of your health tech journey.</h2>
+        <div class="guide-grid">
+          {
+            values.map((v) => (
+              <article>
+                <span class="check" aria-hidden="true">✓</span>
+                <h3>{v.title}</h3>
+                <p>{v.body}</p>
+              </article>
+            ))
+          }
+        </div>
+        <a href="/about/" class="guide-more">Learn More</a>
       </div>
-      <a href="/about/" class="btn-solid">Learn More</a>
     </section>
 
     <section class="testimonials">
@@ -283,16 +307,75 @@ const faqs = [
       </div>
     </section>
 
-    <section class="faq">
-      <h2>Common questions</h2>
-      {
-        faqs.map((f) => (
-          <details>
-            <summary>{f.question}</summary>
-            <p>{f.answer}</p>
-          </details>
-        ))
-      }
+    <section class="contact-cta">
+      <p class="eyebrow">Get started</p>
+      <h2>Schedule your personalized consultation today</h2>
+      <p class="contact-lede">Drop your contact details into the form, and we'll reach out to you!</p>
+
+      {/*
+        Static build has no form backend yet. This posts to a Cloudflare Pages
+        Function / Brevo endpoint added at wiring time; until then it is inert.
+        See TODO in the repo. Fields mirror the live Elementor form exactly.
+      */}
+      <form class="contact-form" method="post" action="/api/contact" novalidate>
+        <div class="field">
+          <label for="name">Name</label>
+          <input id="name" name="name" type="text" autocomplete="name" required />
+        </div>
+        <div class="row">
+          <div class="field">
+            <label for="email">Email</label>
+            <input id="email" name="email" type="email" autocomplete="email" required />
+          </div>
+          <div class="field">
+            <label for="phone">Phone number</label>
+            <input id="phone" name="phone" type="tel" autocomplete="tel" />
+          </div>
+        </div>
+        <div class="row">
+          <div class="field">
+            <label for="company">Company name</label>
+            <input id="company" name="company" type="text" autocomplete="organization" />
+          </div>
+          <div class="field">
+            <label for="website">Website</label>
+            <input id="website" name="website" type="url" />
+          </div>
+        </div>
+        <div class="field">
+          <label for="interest">Interested in</label>
+          <select id="interest" name="interest">
+            {interests.map((o) => <option value={o}>{o}</option>)}
+          </select>
+        </div>
+        <div class="field">
+          <label for="message">Message</label>
+          <textarea id="message" name="message" rows="4" placeholder="Tell us more about your needs..."></textarea>
+        </div>
+        <button type="submit" class="btn-solid">Submit</button>
+      </form>
+    </section>
+
+    <section class="insights">
+      <p class="eyebrow">Insights</p>
+      <h2>Valuable insights that empower your decision-making</h2>
+      <div class="insights-grid">
+        {
+          insights.map((post) => (
+            <article class="post-card">
+              <a href={post.href} class="post-thumb">
+                <img src={post.image} alt={post.title} width="384" height="236" loading="lazy" />
+              </a>
+              <p class="post-cat">{post.category}</p>
+              <h3>
+                <a href={post.href}>{post.title}</a>
+              </h3>
+              <p class="post-excerpt">{post.excerpt}</p>
+              <a href={post.href} class="post-more">Read More</a>
+            </article>
+          ))
+        }
+      </div>
     </section>
   </main>
 
@@ -481,7 +564,7 @@ const faqs = [
     position: relative;
     max-width: 1165px;
     margin: 0 auto;
-    min-height: 1400px;
+    min-height: 1050px;
   }
 
   .band-photo {
@@ -600,23 +683,78 @@ const faqs = [
     }
   }
 
-  .values .grid,
+  /* Guide: portrait left, pale-green panel (#9ED09E) with the six values right. */
+  .guide {
+    display: grid;
+    grid-template-columns: 480px 1fr;
+    align-items: stretch;
+    gap: 0;
+    padding: var(--space-2xl) 0;
+  }
+
+  .guide-photo {
+    width: 480px;
+    height: 100%;
+    object-fit: cover;
+    object-position: top center;
+  }
+
+  .guide-panel {
+    background: #9ed09e;
+    padding: var(--space-xl);
+  }
+
+  .guide-panel > h2 {
+    font-size: 25px;
+    font-weight: 600;
+    letter-spacing: -0.5px;
+    max-width: 18ch;
+    margin: 0 0 var(--space-lg);
+  }
+
+  .guide-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--space-md) var(--space-lg);
+  }
+
+  .check {
+    display: block;
+    font-size: 1.2rem;
+    font-weight: 700;
+    color: var(--color-ink);
+    margin-bottom: 0.4rem;
+  }
+
+  .guide-grid h3 {
+    font-size: 1rem;
+    font-weight: 600;
+    margin: 0 0 0.3rem;
+  }
+
+  .guide-grid p {
+    margin: 0;
+    font-size: 0.9rem;
+    line-height: 1.5;
+    color: var(--color-slate);
+  }
+
+  .guide-more {
+    display: inline-block;
+    margin-top: var(--space-lg);
+    font-family: var(--font-body);
+    font-weight: 600;
+    font-size: 14px;
+    color: var(--color-ink);
+    text-decoration: underline;
+    text-underline-offset: 4px;
+  }
+
   .testimonials .grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(17rem, 1fr));
     gap: var(--space-lg);
     margin-top: var(--space-lg);
-  }
-
-  .values h3 {
-    font-size: 1.15rem;
-    margin: 0 0 var(--space-xs);
-    color: var(--color-primary);
-  }
-
-  .values p {
-    margin: 0;
-    color: var(--color-slate);
   }
 
   blockquote {
@@ -630,16 +768,98 @@ const faqs = [
     font-weight: 600;
   }
 
-  .faq details {
-    border-bottom: 1px solid var(--color-rule);
-    padding: var(--space-sm) 0;
+  /* Contact form. */
+  .contact-lede {
+    color: var(--color-slate);
+    margin: 0 0 var(--space-lg);
   }
 
-  .faq summary {
-    font-family: var(--font-display);
+  .contact-form {
+    max-width: 640px;
+  }
+
+  .contact-form .row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--space-md);
+  }
+
+  .field {
+    margin-bottom: var(--space-md);
+    display: flex;
+    flex-direction: column;
+    gap: 0.35rem;
+  }
+
+  .field label {
+    font-size: 0.85rem;
     font-weight: 600;
-    font-size: 1.1rem;
-    cursor: pointer;
+    color: var(--color-slate);
+  }
+
+  .field input,
+  .field select,
+  .field textarea {
+    font-family: var(--font-body);
+    font-size: 0.95rem;
+    padding: 0.7rem 0.85rem;
+    border: 1px solid var(--color-rule);
+    border-radius: var(--radius);
+    background: #fff;
+    color: var(--color-ink);
+  }
+
+  .field input:focus,
+  .field select:focus,
+  .field textarea:focus {
+    outline: 2px solid var(--color-primary-accent);
+    border-color: var(--color-primary);
+  }
+
+  /* Insights: three post cards. */
+  .insights-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: var(--space-lg);
+    margin-top: var(--space-lg);
+  }
+
+  .post-thumb img {
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+    border-radius: var(--radius);
+  }
+
+  .post-cat {
+    margin: var(--space-sm) 0 0.2rem;
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--color-primary);
+    font-weight: 600;
+  }
+
+  .post-card h3 {
+    font-size: 1.15rem;
+    margin: 0 0 var(--space-xs);
+  }
+
+  .post-card h3 a {
+    color: var(--color-ink);
+    text-decoration: none;
+  }
+
+  .post-excerpt {
+    margin: 0 0 var(--space-sm);
+    font-size: 0.9rem;
+    color: var(--color-slate);
+  }
+
+  .post-more {
+    font-weight: 600;
+    font-size: 0.9rem;
+    text-decoration: none;
   }
 
   .btn-solid {
@@ -652,5 +872,22 @@ const faqs = [
     font-size: 14px;
     font-weight: 600;
     padding: 16.5px 32px;
+    border: none;
+    cursor: pointer;
+  }
+
+  @media (max-width: 860px) {
+    .guide {
+      grid-template-columns: 1fr;
+    }
+    .guide-photo {
+      width: 100%;
+      height: 420px;
+    }
+    .guide-grid,
+    .contact-form .row,
+    .insights-grid {
+      grid-template-columns: 1fr;
+    }
   }
 </style>
