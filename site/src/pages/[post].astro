@@ -1,0 +1,248 @@
+---
+/**
+ * Blog post route. The live site serves posts at the root (/slug/), not under
+ * /insights/, so this dynamic route lives at the top level to preserve those
+ * URLs exactly for SEO.
+ */
+import { getCollection, render } from 'astro:content'
+import BaseLayout from '../layouts/BaseLayout.astro'
+import Header from '../components/Header.astro'
+import Footer from '../components/Footer.astro'
+import { articleSchema, breadcrumbSchema } from '../lib/schema'
+
+export async function getStaticPaths() {
+  const posts = await getCollection('insights', ({ data }) => !data.draft)
+  return posts.map((entry) => ({
+    params: { post: entry.id },
+    props: { entry, all: posts },
+  }))
+}
+
+const { entry, all } = Astro.props
+const d = entry.data
+const path = `/${entry.id}/`
+const { Content } = await render(entry)
+
+const others = all.filter((p) => p.id !== entry.id).slice(0, 2)
+
+const schema = [
+  articleSchema({
+    title: d.title,
+    description: d.description,
+    path,
+    published: d.published,
+    updated: d.updated,
+    image: d.image,
+  }),
+  breadcrumbSchema([
+    { name: 'Home', path: '/' },
+    { name: 'Insights', path: '/insights/' },
+    { name: d.title, path },
+  ]),
+]
+
+const fmtDate = (dt: Date) =>
+  dt.toLocaleDateString('en-CA', { year: 'numeric', month: 'long', day: 'numeric' })
+---
+
+<BaseLayout
+  title={d.title}
+  description={d.description}
+  image={d.image}
+  schema={schema}
+  published={d.published}
+  updated={d.updated}
+>
+  <Header />
+
+  <main>
+    <article>
+      <h1>{d.title}</h1>
+      <p class="meta">
+        <time datetime={d.published.toISOString()}>{fmtDate(d.published)}</time>
+        <span class="cat">{d.category}</span>
+      </p>
+      {d.image && <img class="hero" src={d.image} alt={d.title} width="900" height="500" />}
+      <div class="prose">
+        <Content />
+      </div>
+    </article>
+
+    {
+      others.length > 0 && (
+        <section class="more">
+          <p class="eyebrow">Insights, {d.category}</p>
+          <div class="more-head">
+            <h2>Other articles</h2>
+            <a href="/insights/" class="see-all">See all insights</a>
+          </div>
+          <div class="cards">
+            {others.map((p) => (
+              <a href={`/${p.id}/`} class="card">
+                {p.data.image && <img src={p.data.image} alt={p.data.title} width="384" height="220" loading="lazy" />}
+                <p class="card-cat">{p.data.category}</p>
+                <h3>{p.data.title}</h3>
+                <p class="card-desc">{p.data.description}</p>
+              </a>
+            ))}
+          </div>
+        </section>
+      )
+    }
+  </main>
+
+  <Footer />
+</BaseLayout>
+
+<style>
+  main {
+    max-width: 760px;
+    margin: 0 auto;
+    padding: var(--space-2xl) var(--space-lg);
+  }
+
+  h1 {
+    font-family: var(--font-body);
+    font-size: clamp(2rem, 4vw, 2.6rem);
+    font-weight: 700;
+    letter-spacing: -1px;
+    text-align: center;
+    color: var(--color-ink);
+  }
+
+  .meta {
+    display: flex;
+    justify-content: center;
+    gap: var(--space-sm);
+    color: var(--color-muted);
+    font-size: 0.9rem;
+    margin: var(--space-sm) 0 var(--space-xl);
+  }
+
+  .cat {
+    color: var(--color-primary);
+    font-weight: 600;
+  }
+
+  .hero {
+    width: 100%;
+    height: auto;
+    border-radius: var(--radius);
+    margin-bottom: var(--space-xl);
+  }
+
+  .prose {
+    color: var(--color-slate);
+    font-size: 1.05rem;
+    line-height: 1.75;
+  }
+
+  .prose :global(h2) {
+    font-size: 1.5rem;
+    color: var(--color-ink);
+    margin: var(--space-xl) 0 var(--space-sm);
+  }
+
+  .prose :global(p) {
+    margin: 0 0 var(--space-md);
+  }
+
+  .prose :global(ol),
+  .prose :global(ul) {
+    padding-left: 1.4rem;
+    margin: 0 0 var(--space-md);
+  }
+
+  .prose :global(li) {
+    margin-bottom: var(--space-sm);
+  }
+
+  .prose :global(a) {
+    color: var(--color-primary);
+  }
+
+  .more {
+    max-width: 1165px;
+    margin: var(--space-2xl) auto 0;
+    border-top: 1px solid var(--color-rule);
+    padding-top: var(--space-xl);
+  }
+
+  .eyebrow {
+    color: var(--color-primary);
+    font-size: 0.8rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    margin: 0;
+  }
+
+  .more-head {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: var(--space-md);
+  }
+
+  .more-head h2 {
+    font-size: 2rem;
+    font-weight: 600;
+    letter-spacing: -1px;
+    margin: var(--space-xs) 0 var(--space-lg);
+  }
+
+  .see-all {
+    color: var(--color-primary);
+    font-weight: 600;
+    font-size: 0.9rem;
+    text-decoration: underline;
+    text-underline-offset: 4px;
+  }
+
+  .cards {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--space-lg);
+  }
+
+  .card {
+    text-decoration: none;
+    color: var(--color-ink);
+    border: 1px solid var(--color-rule);
+    border-radius: var(--radius);
+    overflow: hidden;
+    padding-bottom: var(--space-md);
+  }
+
+  .card img {
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+  }
+
+  .card-cat {
+    color: var(--color-primary);
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    margin: var(--space-md) var(--space-md) 0.2rem;
+  }
+
+  .card h3 {
+    margin: 0 var(--space-md) var(--space-xs);
+    font-size: 1.1rem;
+  }
+
+  .card-desc {
+    margin: 0 var(--space-md);
+    font-size: 0.9rem;
+    color: var(--color-slate);
+  }
+
+  @media (max-width: 700px) {
+    .cards {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

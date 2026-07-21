@@ -16,7 +16,10 @@ import { glob } from 'astro/loaders'
  */
 
 const seo = {
-  title: z.string().max(60, 'Keep titles short — base layout appends the site name'),
+  // No hard length cap — content titles (posts, episodes) are legitimately
+  // long. The base layout emits a dev-time warning when title + site name
+  // exceeds ~70 chars, which is the soft guardrail instead of a build failure.
+  title: z.string(),
   description: z.string().min(50).max(160),
   image: z.string().optional(),
   draft: z.boolean().default(false),
@@ -46,7 +49,9 @@ const podcasts = defineCollection({
     ...seo,
     published: z.coerce.date(),
     episodeNumber: z.number().int().positive().optional(),
-    youtubeId: z.string(),
+    /** At least one embed source. The live episodes use Spotify. */
+    spotifyId: z.string().optional(),
+    youtubeId: z.string().optional(),
     duration: z.string().optional(), // ISO 8601, e.g. PT32M14S
     guest: z.string().optional(),
     /**
