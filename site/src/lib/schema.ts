@@ -43,6 +43,11 @@ export function personSchema() {
       '@type': 'Organization',
       name: a.name,
     })),
+    founder: AUTHOR.founderOf.map((f) => ({
+      '@type': 'Organization',
+      name: f.name,
+      description: f.description,
+    })),
   }
 }
 

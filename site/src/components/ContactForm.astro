@@ -1,0 +1,184 @@
+---
+/**
+ * The consultation form. Shared by the home page, About, and Contact so the
+ * fields stay identical everywhere. Mirrors the live Elementor form.
+ *
+ * No backend yet: posts to /api/contact, wired to a Cloudflare Pages Function
+ * (or Brevo) at cutover. Inert until then.
+ */
+import { CONTACT } from '../lib/site'
+
+interface Props {
+  /** Show the phone/email "OR REACH US AT" rail beside the form. */
+  withContactRail?: boolean
+}
+const { withContactRail = false } = Astro.props
+
+const interests = [
+  'AI Scribe',
+  'EMR Training',
+  'EMR Optimization',
+  'EMR Systems Implementation',
+  'IT Services',
+  'Other',
+]
+---
+
+<div class:list={['contact-wrap', withContactRail && 'has-rail']}>
+  {
+    withContactRail && (
+      <aside class="rail">
+        <p class="rail-label">Or reach us at:</p>
+        <p>
+          <span class="rail-key">T:</span>{' '}
+          <a href={CONTACT.phoneHref}>{CONTACT.phone}</a>
+        </p>
+        <p>
+          <span class="rail-key">E:</span>{' '}
+          <a href={`mailto:${CONTACT.email}`}>{CONTACT.email}</a>
+        </p>
+      </aside>
+    )
+  }
+
+  <form class="contact-form" method="post" action="/api/contact" novalidate>
+    <div class="field">
+      <label for="name">Name</label>
+      <input id="name" name="name" type="text" autocomplete="name" required />
+    </div>
+    <div class="row">
+      <div class="field">
+        <label for="email">Email</label>
+        <input id="email" name="email" type="email" autocomplete="email" required />
+      </div>
+      <div class="field">
+        <label for="phone">Phone number</label>
+        <input id="phone" name="phone" type="tel" autocomplete="tel" />
+      </div>
+    </div>
+    <div class="row">
+      <div class="field">
+        <label for="company">Company name</label>
+        <input id="company" name="company" type="text" autocomplete="organization" />
+      </div>
+      <div class="field">
+        <label for="website">Website</label>
+        <input id="website" name="website" type="url" />
+      </div>
+    </div>
+    <div class="field">
+      <label for="interest">Interested in</label>
+      <select id="interest" name="interest">
+        {interests.map((o) => <option value={o}>{o}</option>)}
+      </select>
+    </div>
+    <div class="field">
+      <label for="message">Message</label>
+      <textarea id="message" name="message" rows="4" placeholder="Tell us more about your needs..."></textarea>
+    </div>
+    <button type="submit" class="btn-solid">Submit</button>
+  </form>
+</div>
+
+<style>
+  .contact-wrap.has-rail {
+    display: grid;
+    grid-template-columns: 240px 1fr;
+    gap: var(--space-2xl);
+    align-items: start;
+  }
+
+  .rail {
+    padding-top: var(--space-md);
+  }
+
+  .rail-label {
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: var(--color-muted);
+    border-bottom: 1px solid var(--color-rule);
+    padding-bottom: var(--space-sm);
+    margin: 0 0 var(--space-md);
+  }
+
+  .rail p {
+    margin: 0 0 var(--space-sm);
+    font-size: 0.95rem;
+  }
+
+  .rail-key {
+    color: var(--color-muted);
+  }
+
+  .rail a {
+    color: var(--color-ink);
+    text-decoration: none;
+  }
+
+  .contact-form {
+    max-width: 640px;
+  }
+
+  .contact-form .row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--space-md);
+  }
+
+  .field {
+    margin-bottom: var(--space-md);
+    display: flex;
+    flex-direction: column;
+    gap: 0.35rem;
+  }
+
+  .field label {
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: var(--color-slate);
+  }
+
+  .field input,
+  .field select,
+  .field textarea {
+    font-family: var(--font-body);
+    font-size: 0.95rem;
+    padding: 0.7rem 0.85rem;
+    border: 1px solid var(--color-rule);
+    border-radius: var(--radius);
+    background: #fff;
+    color: var(--color-ink);
+  }
+
+  .field input:focus,
+  .field select:focus,
+  .field textarea:focus {
+    outline: 2px solid var(--color-primary-accent);
+    border-color: var(--color-primary);
+  }
+
+  .btn-solid {
+    display: inline-block;
+    background: var(--color-primary);
+    color: #fff;
+    text-decoration: none;
+    font-family: var(--font-body);
+    font-size: 14px;
+    font-weight: 600;
+    padding: 16.5px 32px;
+    border: none;
+    cursor: pointer;
+  }
+
+  @media (max-width: 800px) {
+    .contact-wrap.has-rail {
+      grid-template-columns: 1fr;
+      gap: var(--space-lg);
+    }
+    .contact-form .row {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

@@ -1,0 +1,368 @@
+---
+/**
+ * About page. Matches the live layout (header band, intro, My Background +
+ * portrait, My Focus / Clinical Operations + reception photo, contact form),
+ * with one deliberate addition the client requested: a "Current ventures"
+ * section covering ALIE and Aurion Intelligence.
+ */
+import BaseLayout from '../layouts/BaseLayout.astro'
+import Header from '../components/Header.astro'
+import Footer from '../components/Footer.astro'
+import ContactForm from '../components/ContactForm.astro'
+import { AUTHOR } from '../lib/site'
+import { personSchema, breadcrumbSchema } from '../lib/schema'
+
+const focusAreas = [
+  'Project management',
+  'Digital transformation',
+  'EMR workflow redesign',
+  'Business development',
+  'IT networking',
+  'Medical records management',
+  'AI tool vetting & implementation',
+]
+
+const ventures = [
+  {
+    name: 'ALIE',
+    role: 'Founder & CEO',
+    tagline: 'Medico-legal AI for CNESST, SAAQ & IVAC',
+    body:
+      'A structured evidence platform for the Quebec medico-legal field. ALIE ' +
+      'turns complex, multi-source medical dossiers into citation-traced, ' +
+      'defensible chronologies and expert reports — so lawyers and physicians ' +
+      'spend their time on judgment rather than reconstructing the file. ' +
+      'Governed by Quebec Law 25: data stays in Canada, de-identified before ' +
+      'any external processing. In pilot with Quebec law firms and expert ' +
+      'physicians.',
+  },
+  {
+    name: 'Aurion Intelligence',
+    role: 'Co-founder',
+    tagline: 'Applied AI for healthcare',
+    body:
+      'A venture building applied AI for healthcare, co-founded with a Montreal ' +
+      'orthopedic surgeon. Aurion pairs clinical expertise with modern AI to ' +
+      'tackle real problems in how care is delivered and documented.',
+  },
+]
+---
+
+<BaseLayout
+  title="About Uzziel Tamon"
+  description="Uzziel Tamon — clinical operations and AI consultant. A decade inside Quebec clinics, now founder of Teché Health Services, ALIE, and co-founder of Aurion Intelligence."
+  schema={[
+    personSchema(),
+    breadcrumbSchema([
+      { name: 'Home', path: '/' },
+      { name: 'About', path: '/about/' },
+    ]),
+  ]}
+>
+  <Header />
+
+  <header class="band">
+    <div class="band-inner">
+      <p class="eyebrow">About</p>
+      <div class="band-row">
+        <h1>Not your average consultant</h1>
+        <a href="/contact/" class="btn-outline">Get a consultation</a>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <p class="intro">
+      Staying consistent, simplifying complex problems, and finding a
+      methodical approach to implementing clinical solutions
+      <span class="muted"> is where I thrive.</span>
+    </p>
+
+    <section class="split">
+      <div class="split-copy">
+        <p class="eyebrow-plain">My Expertise</p>
+        <h2>My Background</h2>
+        <p>
+          Most clinics run on burnout — overbooked calendars, chaotic EMRs, and
+          admin time creeping into evenings. After nearly a decade managing
+          technology and clinical operations at one of Quebec's busiest medical
+          centers, I founded Teché to solve the root cause: outdated systems and
+          inefficient workflows.
+        </p>
+        <p>
+          My journey began at Brunswick Medical Center, where I started as an
+          Archivist and worked my way up to Archives Supervisor and IT
+          Coordinator. Along the way I led major projects — transitioning from
+          paper charts to EMR, implementing appointment booking systems, and
+          deploying RAMQ billing. I also contributed to research at the MUHC
+          Research Institute as a Data Manager, co-authoring published work on
+          anticonvulsant serum levels and end-organ dysfunction.
+        </p>
+        <p>
+          Since 2022, I've helped clinics automate documentation, train staff
+          more effectively, and streamline operations using a mix of AI tools,
+          EMR optimization, and lean systems — from solo practices to
+          multi-provider clinics.
+        </p>
+      </div>
+      <img
+        class="split-photo"
+        src="/img/uzziel-about-portrait.jpg"
+        alt="Uzziel Tamon, founder of Teché Health Services"
+        width="506"
+        height="506"
+        loading="lazy"
+      />
+    </section>
+
+    <section class="split reverse">
+      <img
+        class="split-photo"
+        src="/img/reception.jpg"
+        alt="Clinic front-desk staff assisting a patient"
+        width="506"
+        height="360"
+        loading="lazy"
+      />
+      <div class="split-copy">
+        <p class="eyebrow-plain">My Focus</p>
+        <h2>Clinical Operations</h2>
+        <p>
+          I'm a consultant who understands how clinics actually operate — I've
+          been in the field for more than a decade, most of it spent
+          implementing systems.
+        </p>
+        <ul class="focus-list">
+          {focusAreas.map((f) => <li>{f}</li>)}
+        </ul>
+        <p class="partner-label">Trusted partner of</p>
+        <img class="partner-logo" src="/img/omnimed-logo.png" alt="Omnimed" width="150" height="30" />
+      </div>
+    </section>
+
+    <section class="ventures">
+      <p class="eyebrow-plain">Beyond Teché</p>
+      <h2>Current ventures</h2>
+      <div class="ventures-grid">
+        {
+          ventures.map((v) => (
+            <article class="venture">
+              <h3>{v.name}</h3>
+              <p class="venture-role">
+                {v.role} · {v.tagline}
+              </p>
+              <p>{v.body}</p>
+            </article>
+          ))
+        }
+      </div>
+    </section>
+
+    <section class="contact">
+      <p class="eyebrow">Get started</p>
+      <h2>Schedule your personalized consultation today</h2>
+      <ContactForm withContactRail />
+    </section>
+  </main>
+
+  <Footer />
+</BaseLayout>
+
+<style>
+  .band {
+    background: #e4edf3;
+  }
+  .band-inner {
+    max-width: 1165px;
+    margin: 0 auto;
+    padding: var(--space-2xl) var(--space-lg) var(--space-xl);
+  }
+  .eyebrow {
+    display: inline-block;
+    background: var(--color-primary);
+    color: #fff;
+    font-size: 0.7rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    padding: 0.3rem 0.7rem;
+    margin: 0 0 var(--space-md);
+  }
+  .band-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-md);
+    flex-wrap: wrap;
+  }
+  .band h1 {
+    font-family: var(--font-body);
+    font-size: 48px;
+    font-weight: 600;
+    letter-spacing: -1px;
+    color: var(--color-primary);
+    margin: 0;
+  }
+  .btn-outline {
+    font-family: var(--font-body);
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--color-primary);
+    text-decoration: none;
+    padding: 16.5px 32px;
+    border: 1px solid var(--color-primary);
+    white-space: nowrap;
+  }
+  .btn-outline:hover {
+    background: var(--color-primary);
+    color: #fff;
+  }
+
+  main {
+    max-width: 1165px;
+    margin: 0 auto;
+    padding: 0 var(--space-lg);
+  }
+
+  .intro {
+    max-width: 62ch;
+    margin: var(--space-2xl) 0;
+    font-size: 1.4rem;
+    line-height: 1.5;
+    font-weight: 500;
+  }
+  .muted {
+    color: var(--color-muted);
+  }
+
+  .eyebrow-plain {
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: var(--color-primary);
+    margin: 0 0 var(--space-xs);
+  }
+
+  .split {
+    display: grid;
+    grid-template-columns: 1fr 506px;
+    gap: var(--space-2xl);
+    align-items: center;
+    padding: var(--space-xl) 0;
+  }
+  .split.reverse {
+    grid-template-columns: 506px 1fr;
+  }
+  .split-photo {
+    width: 100%;
+    height: 100%;
+    max-height: 520px;
+    object-fit: cover;
+    border-radius: var(--radius);
+  }
+  .split h2 {
+    font-size: 44px;
+    font-weight: 600;
+    letter-spacing: -1.5px;
+    color: var(--color-primary);
+    margin: 0 0 var(--space-md);
+  }
+  .split p {
+    color: var(--color-slate);
+    margin: 0 0 var(--space-md);
+  }
+
+  .focus-list {
+    list-style: none;
+    margin: var(--space-md) 0;
+    padding: 0;
+  }
+  .focus-list li {
+    position: relative;
+    padding: 0 0 var(--space-sm) 1.8rem;
+    border-bottom: 1px solid var(--color-rule);
+    margin-bottom: var(--space-sm);
+    font-weight: 500;
+    color: var(--color-ink);
+  }
+  .focus-list li::before {
+    content: '✓';
+    position: absolute;
+    left: 0;
+    font-weight: 700;
+    color: var(--color-ink);
+  }
+  .partner-label {
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    font-size: 0.8rem;
+    color: var(--color-muted);
+    margin: var(--space-md) 0 var(--space-sm) !important;
+  }
+  .partner-logo {
+    height: 30px;
+    width: auto;
+  }
+
+  .ventures {
+    padding: var(--space-2xl) 0;
+  }
+  .ventures > h2 {
+    font-size: 44px;
+    font-weight: 600;
+    letter-spacing: -1.5px;
+    color: var(--color-primary);
+    margin: 0 0 var(--space-lg);
+  }
+  .ventures-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--space-lg);
+  }
+  .venture {
+    background: var(--color-primary-tint);
+    border-radius: var(--radius);
+    padding: var(--space-lg);
+  }
+  .venture h3 {
+    font-size: 1.5rem;
+    margin: 0 0 0.2rem;
+    color: var(--color-primary);
+  }
+  .venture-role {
+    font-weight: 600;
+    font-size: 0.85rem;
+    color: var(--color-slate);
+    margin: 0 0 var(--space-sm);
+  }
+  .venture p:last-child {
+    margin: 0;
+    font-size: 0.92rem;
+    line-height: 1.6;
+    color: var(--color-slate);
+  }
+
+  .contact {
+    padding: var(--space-2xl) 0;
+  }
+  .contact h2 {
+    font-size: 40px;
+    font-weight: 600;
+    letter-spacing: -1px;
+    color: var(--color-primary);
+    margin: 0 0 var(--space-xl);
+  }
+
+  @media (max-width: 900px) {
+    .split,
+    .split.reverse,
+    .ventures-grid {
+      grid-template-columns: 1fr;
+      gap: var(--space-lg);
+    }
+    .split.reverse .split-photo {
+      order: -1;
+    }
+  }
+</style>

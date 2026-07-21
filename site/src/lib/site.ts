@@ -47,6 +47,14 @@ export const AUTHOR = {
     { name: 'MUHC Research Institute', role: 'Data Manager' },
   ],
 
+  /** Companies founded/co-founded — schema.org Person.founderOf. Strengthens
+   *  the entity graph by linking Uzziel to more named organizations. */
+  founderOf: [
+    { name: 'Teché Health Services', description: 'Clinical operations & AI consulting' },
+    { name: 'ALIE', description: 'Medico-legal AI platform for the Quebec medico-legal field' },
+    { name: 'Aurion Intelligence', description: 'Applied AI for healthcare' },
+  ],
+
   /** Topical authority signals for knowsAbout. */
   expertise: [
     'EMR implementation',

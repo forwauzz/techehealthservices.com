@@ -1,0 +1,112 @@
+---
+/**
+ * Contact page. Header band + intro + the shared consultation form.
+ */
+import BaseLayout from '../layouts/BaseLayout.astro'
+import Header from '../components/Header.astro'
+import Footer from '../components/Footer.astro'
+import ContactForm from '../components/ContactForm.astro'
+import { breadcrumbSchema } from '../lib/schema'
+---
+
+<BaseLayout
+  title="Contact"
+  description="Schedule a free consultation with Teché Health Services. Let's talk about your clinic's EMR, AI scribe adoption, and workflow challenges — and how to solve them."
+  schema={[
+    breadcrumbSchema([
+      { name: 'Home', path: '/' },
+      { name: 'Contact', path: '/contact/' },
+    ]),
+  ]}
+>
+  <Header />
+
+  <header class="band">
+    <div class="band-inner">
+      <p class="eyebrow">Contact Us</p>
+      <h1>Schedule a free consultation</h1>
+    </div>
+  </header>
+
+  <main>
+    <p class="intro">
+      <strong>Schedule a free consultation with me &amp; let's talk solutions.</strong>
+      Drop your contact details into the form below and I'll reach out to you.
+    </p>
+
+    <section class="contact">
+      <p class="eyebrow-plain">Get started</p>
+      <h2>Schedule your personalized consultation today</h2>
+      <ContactForm withContactRail />
+    </section>
+  </main>
+
+  <Footer />
+</BaseLayout>
+
+<style>
+  .band {
+    background: #e4edf3;
+  }
+  .band-inner {
+    max-width: 1165px;
+    margin: 0 auto;
+    padding: var(--space-2xl) var(--space-lg) var(--space-xl);
+  }
+  .eyebrow {
+    display: inline-block;
+    background: var(--color-primary);
+    color: #fff;
+    font-size: 0.7rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    padding: 0.3rem 0.7rem;
+    margin: 0 0 var(--space-md);
+  }
+  .band h1 {
+    font-family: var(--font-body);
+    font-size: 48px;
+    font-weight: 600;
+    letter-spacing: -1px;
+    color: var(--color-primary);
+    margin: 0;
+  }
+
+  main {
+    max-width: 1165px;
+    margin: 0 auto;
+    padding: 0 var(--space-lg);
+  }
+
+  .intro {
+    max-width: 60ch;
+    margin: var(--space-2xl) 0;
+    font-size: 1.35rem;
+    line-height: 1.5;
+    font-weight: 400;
+    color: var(--color-slate);
+  }
+  .intro strong {
+    color: var(--color-ink);
+  }
+
+  .eyebrow-plain {
+    font-size: 0.9rem;
+    color: var(--color-ink);
+    margin: 0 0 var(--space-xs);
+  }
+
+  .contact {
+    padding: 0 0 var(--space-2xl);
+    border-top: 1px solid var(--color-rule);
+    padding-top: var(--space-2xl);
+  }
+  .contact h2 {
+    font-size: 40px;
+    font-weight: 600;
+    letter-spacing: -1px;
+    color: var(--color-primary);
+    margin: 0 0 var(--space-xl);
+  }
+</style>
